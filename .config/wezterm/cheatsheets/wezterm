@@ -1,0 +1,87 @@
+WEZTERM CHEATSHEET
+
+USAGE: wezterm [command] [options]
+       Leader: Ctrl+a
+
+APPLICATION CONTROL:
+  Cmd+q                       Quit WezTerm
+  Cmd+K                       Clear screen and flash
+  Cmd+/                       Search current content
+  Leader+h                    Command palette
+  Leader+d                    Debug interface
+  Leader+c                    Launch menu
+  Leader+?                    Show cheatsheets
+
+FONT & DISPLAY:
+  Cmd+=                       Increase font size
+  Cmd+-                       Decrease font size
+  Cmd+0                       Reset font size
+
+WORKSPACE MANAGEMENT:
+  Leader+s                    Workspace selector
+  Leader+l                    Switch to last workspace
+  Cmd+Opt+[                   Previous workspace
+  Cmd+Opt+]                   Next workspace
+  Leader+Shift+$              Rename current workspace
+
+TAB MANAGEMENT:
+  Cmd+T                       New tab
+  Cmd+W                       Close current tab
+  Cmd+1-9                     Jump to tab by number
+  Cmd+Shift+[                 Previous tab
+  Cmd+Shift+]                 Next tab
+  Leader+,                    Rename current tab
+  Leader+t                    Tab selector (fuzzy search)
+
+PANE MANAGEMENT:
+  Split:
+  Leader+-                    Split vertically (top/bottom)
+  Leader+\                    Split horizontally (left/right)
+  Leader+z                    Toggle pane zoom
+
+  Navigation:
+  Cmd+Opt+←→↑↓                Navigate panes by direction
+  Leader+m → s                Pane selector
+
+MODAL OPERATIONS:
+  Copy Mode (Leader+y):
+  b                           Copy entire buffer
+  p                           Copy current page
+  l                           Smart line copy
+  r                           Regex copy (IPs, emails, URLs, etc)
+
+  Open Mode (Leader+o):
+  p                           Open Finder in current directory
+  c                           Open VS Code
+  u                           Open URL from screen
+
+  Move Mode (Leader+m):
+  r                           Rotate panes counter-clockwise
+  s                           Pane selector
+  Shift+←→                    Move tab position
+
+  Resize Mode (Leader+r):
+  ←                           Expand left (1 char)
+  →                           Expand right (1 char)
+  ↑                           Expand up (1 line)
+  ↓                           Expand down (1 line)
+  Enter/Esc                   Exit resize mode
+
+COPY & PASTE:
+  Cmd+C / Double-click        Copy selected text
+  Cmd+V / Right-click         Paste clipboard content
+  Triple-click                Select entire line
+  Leader+v                    Enter vim-style copy mode
+
+SCROLLING:
+  Shift+↑↓                    Line scroll (1 line)
+  Cmd+Shift+↑↓                Page scroll (1 page)
+  Cmd+Opt+↑↓                  Half page scroll (0.5 page)
+  Cmd+↑                       Scroll to top
+  Cmd+↓                       Scroll to bottom
+
+CONFIGURATION:
+  Config location:            ~/.config/wezterm/
+  Launch items:               config/launch.lua
+  Workspaces:                 utils/workspaces.lua
+  Cheatsheets:                ~/.dotfiles/cheatsheets/

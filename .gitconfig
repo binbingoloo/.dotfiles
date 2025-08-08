@@ -1,0 +1,98 @@
+[user]
+  name = binbingoloo
+  email = binbingoloo@gmail.com
+
+[color]
+  ui = auto
+  diff = auto
+  status = auto
+  branch = auto
+
+[core]
+  editor = nvim
+  autocrlf = input
+  whitespace = trailing-space,space-before-tab
+  excludesfile = ~/.gitignore_global
+  pager = delta
+
+[delta]
+  navigate = true
+  light = true
+  side-by-side = false
+  line-numbers = true
+  syntax-theme = GitHub
+
+  # File decoration
+  file-style = bold "#0366d6"
+  file-decoration-style = "#0366d6" box
+
+  # Line modifications
+  plus-style = syntax "#e6ffec"
+  minus-style = syntax "#ffebe9"
+
+  # Word-level highlighting
+  plus-emph-style = syntax "#d0f8d0"
+  minus-emph-style = syntax "#f8d0d0"
+
+  # Line numbers styling
+  line-numbers-left-style = gray
+  line-numbers-right-style = gray
+  line-numbers-minus-style = "#db4545"
+  line-numbers-plus-style = "#26a148"
+
+  # Other indicators
+  whitespace-error-style = reverse "#d73a49"
+  hunk-header-style = file line-number syntax
+
+  # Commit decoration
+  commit-decoration-style = "#0366d6" box
+  commit-style = bold "#0366d6"
+
+  # Zero-width padding
+  zero-style = dim syntax
+
+[interactive]
+  diffFilter = delta --color-only
+
+[push]
+  default = current
+  autoSetupRemote = true
+
+[pull]
+  rebase = true
+
+[diff]
+  colorMoved = default
+  algorithm = histogram
+
+[merge]
+  conflictstyle = diff3
+  tool = nvimdiff
+
+[commit]
+  template = ~/.gitmessage
+
+[init]
+  defaultBranch = main
+
+[alias]
+  # Status and information
+  s = status -s
+  lg = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit
+
+  # Branch management
+  co = checkout
+  cob = checkout -b
+
+  # Commit workflows
+  cm = commit -m
+  amend = commit --amend
+  wip = !git add . && git commit -m 'chore: WIP'
+
+  # Reset and clean
+  unstage = reset HEAD --
+  discard = checkout --
+
+  # Advanced features
+  stash-all = stash save --include-untracked
+  squash = "!f() { git reset --soft HEAD~$1 && git commit --edit -m \"$(git log --format=%B --reverse HEAD..HEAD@{1})\"; }; f"

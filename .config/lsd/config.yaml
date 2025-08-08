@@ -1,0 +1,80 @@
+# Core settings
+classic: false
+
+# Include all standard columns that ls would provide
+blocks:
+  - permission
+  - user
+  - group
+  - size
+  - date
+  - name
+
+# Color settings
+color:
+  when: auto
+  theme: default
+
+# Date format - clear but compact
+date: relative
+
+# Don't follow symlinks by default
+dereference: false
+
+# Icon configuration - enable but not overwhelming
+icons:
+  when: auto
+  theme: fancy
+  separator: " "
+
+# Standard ignore patterns
+ignore-globs:
+  - .git
+  - node_modules
+  - __pycache__
+  - .cache
+  - .venv
+  - target
+
+# File type indicators
+indicators: true
+
+# Grid layout for efficient use of space
+layout: grid
+
+# Recursion disabled by default
+recursion:
+  enabled: false
+
+# Human-readable size format
+size: default
+
+# Standard permission display
+permission: rwx
+
+# Sorting configuration - familiar behavior
+sorting:
+  column: name
+  reverse: false
+  dir-grouping: none
+
+# Symlink display
+no-symlink: false
+symlink-arrow: ⇒
+
+# Disable total size calculation which requires reading directory contents
+total-size: false
+
+# Hyperlink detection
+hyperlink: never
+
+# Headers off by default for cleaner output
+header: true
+
+# Quote handling
+literal: false
+
+# Username/group display without truncation by default
+truncate-owner:
+  after: 12
+  marker: "…"

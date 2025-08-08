@@ -1,0 +1,62 @@
+gui:
+  theme:
+    activeBorderColor: [cyan, bold]
+    inactiveBorderColor: [white]
+    
+    selectedLineBgColor: ['#2D3A5D']
+    
+    unstagedChangesColor: [red]
+    
+    cherryPickedCommitFgColor: [blue]
+    cherryPickedCommitBgColor: [yellow]
+
+  commandLogSize: 8
+
+git:
+  parseEmoji: true
+  
+  paging:
+    colorArg: always
+    pager: "delta --paging=never"
+
+customCommands:
+  - key: "W"
+    command: "git wip"
+    context: "files"
+    description: "Quick WIP commit"
+    
+  - key: "w"
+    command: 'git add . && git commit -m "chore: WIP - {{.Form.message}}"'
+    context: "files"
+    description: "WIP with description"
+    prompts:
+      - type: "input"
+        title: "WIP Description"
+        key: "message"
+        
+  - key: "F"
+    command: "git amend --no-edit"
+    context: "files"
+    description: "Fix last commit (keep message)"
+    
+  - key: "C"
+    command: "git clean -fd"
+    context: "files"
+    description: "Clean untracked files/directories"
+    loadingText: "Cleaning..."
+    
+  - key: "S"
+    command: "git squash {{.Form.count}}"
+    context: "commits"
+    description: "Squash last N commits"
+    prompts:
+      - type: "input"
+        title: "Number of commits to squash"
+        key: "count"
+        initialValue: "2"
+
+confirmOnQuit: false
+
+refresher:
+  refreshInterval: 3
+  fetchInterval: 60

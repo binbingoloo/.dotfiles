@@ -1,0 +1,54 @@
+TMUX CHEATSHEET
+
+USAGE: tmux [command] [options]
+       prefix: Ctrl+b
+
+SESSION MANAGEMENT:
+  tmux new -s <name>          Create new session with name
+  tmux ls                     List all sessions
+  tmux attach -t <name>       Attach to named session
+  tmux kill-session -t <name> Kill named session
+
+  Ctrl+b d                    Detach from current session
+  Ctrl+b $                    Rename current session
+
+WINDOW MANAGEMENT:
+  Ctrl+b c                    Create new window (keeps current path)
+  Ctrl+b ,                    Rename current window
+  Ctrl+b &                    Kill current window
+  Ctrl+b 0-9                  Switch to window by number
+  Ctrl+b n                    Next window
+  Ctrl+b p                    Previous window
+
+  Alt+1-5                     Quick switch to window 1-5 (no prefix)
+
+PANE MANAGEMENT:
+  Ctrl+b |                    Split vertically (keeps current path)
+  Ctrl+b -                    Split horizontally (keeps current path)
+  Ctrl+b x                    Kill current pane
+  Ctrl+b z                    Toggle pane zoom
+
+  Navigation (Vim-style):
+  Ctrl+b h                    Move to left pane
+  Ctrl+b j                    Move to pane below
+  Ctrl+b k                    Move to pane above
+  Ctrl+b l                    Move to right pane
+
+  Resizing (hold Ctrl+b for continuous):
+  Ctrl+b H                    Resize 5 cells left
+  Ctrl+b J                    Resize 5 cells down
+  Ctrl+b K                    Resize 5 cells up
+  Ctrl+b L                    Resize 5 cells right
+
+COPY MODE (Vim-style):
+  Ctrl+b [                   Enter copy mode
+  v                          Begin selection (in copy mode)
+  y                          Copy selection and exit
+  q                          Exit copy mode
+
+  Navigation in copy mode: h/j/k/l, gg, G, /, ?, n, N
+
+GENERAL:
+  Ctrl+b ?                    Show help
+  Ctrl+b :                    Enter command mode
+  Ctrl+b r                    Reload config file

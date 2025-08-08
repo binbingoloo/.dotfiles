@@ -1,0 +1,10 @@
+--theme="Monokai Extended"
+
+--style="header,numbers,grid,changes"
+
+--map-syntax "*.conf:INI"
+--map-syntax ".gitconfig:INI"
+--map-syntax "*.prop:Java Properties"
+--map-syntax "*.properties:Java Properties"
+
+--italic-text=always

@@ -13,7 +13,7 @@ vim.opt.showmode = false
 vim.opt.scrolloff = 10
 
 -- Enable full mouse support
-vim.opt.mouse = "a"
+vim.opt.mouse = 'a'
 
 -- Maintain indentation on wrapped lines
 vim.opt.breakindent = true
@@ -49,5 +49,5 @@ vim.opt.splitright = true
 vim.opt.splitbelow = true
 
 -- Faster completion and key sequence response
-vim.opt.updatetime = 250
-vim.opt.timeoutlen = 300
+vim.opt.updatetime = 500
+vim.opt.timeoutlen = 700

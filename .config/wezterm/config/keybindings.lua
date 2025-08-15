@@ -25,12 +25,6 @@ function M.get_keys()
 
     -- Application
     { key = "q", mods = "CMD", action = action.QuitApplication },
-    { key = "k", mods = "CMD", action = action.Multiple {
-        action.ClearScrollback "ScrollbackAndViewport",
-        action.SendKey { key = "l", mods = "CTRL" },
-        action.EmitEvent "flash-terminal"
-      }
-    },
 
     -- Clipboard
     { key = "v", mods = "CMD", action = action.PasteFrom("Clipboard") },
@@ -68,19 +62,15 @@ function M.get_keys()
     { key = "UpArrow", mods = "OPT", action = action.ActivatePaneDirection("Up") },
     { key = "DownArrow", mods = "OPT", action = action.ActivatePaneDirection("Down") },
 
-    -- Scrolling
-    -- Line-by-line scrolling
-    { key = "UpArrow", mods = "SHIFT", action = action.ScrollByLine(-1) },
-    { key = "DownArrow", mods = "SHIFT", action = action.ScrollByLine(1) },
-    -- Full page scrolling
-    { key = "UpArrow", mods = "CMD|SHIFT", action = action.ScrollByPage(-1) },
-    { key = "DownArrow", mods = "CMD|SHIFT", action = action.ScrollByPage(1) },
-    -- Half page scrolling
-    { key = "UpArrow", mods = "CMD|OPT", action = action.ScrollByPage(-0.5) },
-    { key = "DownArrow", mods = "CMD|OPT", action = action.ScrollByPage(0.5) },
-    -- Jump to top/bottom
-    { key = "UpArrow", mods = "CMD", action = action.ScrollToTop },
-    { key = "DownArrow", mods = "CMD", action = action.ScrollToBottom },
+    -- Vim-style scrolling
+    { key = "k", mods = "OPT", action = action.ScrollByLine(-1) },     -- Scroll up one line
+    { key = "j", mods = "OPT", action = action.ScrollByLine(1) },      -- Scroll down one line
+    { key = "u", mods = "OPT", action = action.ScrollByPage(-0.5) },   -- Scroll up half page
+    { key = "d", mods = "OPT", action = action.ScrollByPage(0.5) },    -- Scroll down half page
+    { key = "b", mods = "OPT", action = action.ScrollByPage(-1) },     -- Scroll up full page
+    { key = "f", mods = "OPT", action = action.ScrollByPage(1) },      -- Scroll down full page
+    { key = "g", mods = "OPT", action = action.ScrollToTop },          -- Jump to top
+    { key = "g", mods = "OPT|SHIFT", action = action.ScrollToBottom }, -- Jump to bottom
 
     -- Font size
     { key = "0", mods = "CMD", action = action.ResetFontSize },

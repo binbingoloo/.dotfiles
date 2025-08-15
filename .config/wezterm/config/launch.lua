@@ -6,7 +6,7 @@ function M.apply(config)
   -- Basic settings
   config.default_prog = { "/bin/zsh", "-l" }
   config.automatically_reload_config = true
-  config.initial_cols = 155
+  config.initial_cols = 160
   config.initial_rows = 35
 
   -- Input method and scrolling

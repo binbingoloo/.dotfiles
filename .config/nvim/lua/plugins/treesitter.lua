@@ -1,19 +1,37 @@
 return {
   {
-    'nvim-treesitter/nvim-treesitter',
-    build = ':TSUpdate',
-    main = 'nvim-treesitter.configs',
+    "nvim-treesitter/nvim-treesitter",
+    -- Runs TreeSitter's update command after install to compile parsers
+    build = ":TSUpdate",
+    -- Specifies the module to configure (required when using opts instead of config function)
+    main = "nvim-treesitter.configs",
     opts = {
-      ensure_installed = { 'bash', 'c', 'diff', 'html', 'lua', 'luadoc', 'markdown', 'markdown_inline', 'query', 'vim', 'vimdoc' },
+      -- Core languages that should always be installed
+      ensure_installed = {
+        "bash",
+        "c",
+        "diff",
+        "html",
+        "lua",
+        "luadoc",
+        "markdown",
+        "markdown_inline",
+        "query",
+        "vim",
+        "vimdoc",
+      },
+      -- Automatically installs parsers for new file types you open
       auto_install = true,
       highlight = {
         enable = true,
-        -- Some languages depend on vim's regex highlighting system (such as Ruby) for indent rules.
-        --  If you are experiencing weird indenting issues, add the language to
-        --  the list of additional_vim_regex_highlighting and disabled languages for indent.
-        additional_vim_regex_highlighting = { 'ruby' },
+        -- Ruby's syntax is too complex for TreeSitter alone, needs vim's regex for accurate highlighting
+        additional_vim_regex_highlighting = { "ruby" },
       },
-      indent = { enable = true, disable = { 'ruby' } },
+      indent = {
+        enable = true,
+        -- Ruby indentation conflicts with regex highlighting, causing incorrect indent levels
+        disable = { "ruby" },
+      },
     },
   },
 }

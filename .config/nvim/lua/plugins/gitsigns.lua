@@ -2,31 +2,55 @@ return {
   {
     "lewis6991/gitsigns.nvim",
     opts = {
+      -- Use thicker lines with custom colors for better visibility (like VSCode)
       signs = {
-        add = { text = "+" },
-        change = { text = "~" },
-        delete = { text = "_" },
-        topdelete = { text = "‾" },
-        changedelete = { text = "~" },
+        add = { text = "▎", hl = "GitSignsAdd" },
+        change = { text = "▎", hl = "GitSignsChange" },
+        delete = { text = "▁", hl = "GitSignsDelete" },
+        topdelete = { text = "▔", hl = "GitSignsDelete" },
+        changedelete = { text = "▎", hl = "GitSignsChange" },
+        untracked = { text = "▎", hl = "GitSignsUntracked" },
       },
+      -- Staged signs with different colors
+      signs_staged = {
+        add = { text = "▎", hl = "GitSignsStagedAdd" },
+        change = { text = "▎", hl = "GitSignsStagedChange" },
+        delete = { text = "▁", hl = "GitSignsStagedDelete" },
+        topdelete = { text = "▔", hl = "GitSignsStagedDelete" },
+        changedelete = { text = "▎", hl = "GitSignsStagedChange" },
+      },
+
+      -- Enable line number highlighting for better IDE experience
+      numhl = true, -- Highlight line numbers
+
+      current_line_blame_opts = {
+        delay = 500, -- Faster response
+      },
+      current_line_blame_formatter = " <author>, <author_time:%Y-%m-%d> • <summary>",
+
+      -- Preview window configuration
+      preview_config = {
+        border = "rounded", -- Rounded border for better appearance
+      },
+
+      -- Experimental features
+      trouble = false,
+
       on_attach = function(bufnr)
         local gitsigns = require("gitsigns")
 
-        -- Helper function that creates buffer-local keymaps (only active in git-tracked files)
+        -- Helper function to create buffer-local keymaps
         local function map(mode, l, r, opts)
           opts = opts or {}
-          opts.buffer = bufnr -- Restricts keymap to current buffer
+          opts.buffer = bufnr
           vim.keymap.set(mode, l, r, opts)
         end
 
         -- Navigation between git changes (hunks)
         map("n", "]c", function()
-          -- vim.wo.diff is true when in diff mode (like :Gdiffsplit)
           if vim.wo.diff then
-            -- Use vim's built-in diff navigation
-            vim.cmd.normal({ "]c", bang = true }) -- bang = true means use ']c!' to force the command
+            vim.cmd.normal({ "]c", bang = true })
           else
-            -- Use gitsigns navigation in normal buffers
             gitsigns.nav_hunk("next")
           end
         end, { desc = "Jump to next git [c]hange" })
@@ -41,7 +65,6 @@ return {
 
         -- Visual mode: stage/reset only selected lines
         map("v", "<leader>hs", function()
-          -- vim.fn.line('.') = current line, vim.fn.line('v') = start of visual selection
           gitsigns.stage_hunk({ vim.fn.line("."), vim.fn.line("v") })
         end, { desc = "git [s]tage hunk" })
         map("v", "<leader>hr", function()
@@ -56,25 +79,54 @@ return {
         map("n", "<leader>hR", gitsigns.reset_buffer, { desc = "git [R]eset buffer" })
         map("n", "<leader>hp", gitsigns.preview_hunk, { desc = "git [p]review hunk" })
 
-        -- Shows commit info for current line in floating window
+        -- Blame and diff operations
         map("n", "<leader>hb", gitsigns.blame_line, { desc = "git [b]lame line" })
-
-        -- Opens a diff view comparing current buffer with git index (staged version)
+        map("n", "<leader>hB", function()
+          gitsigns.blame_line({ full = true })
+        end, { desc = "git [B]lame line (full)" })
         map("n", "<leader>hd", gitsigns.diffthis, { desc = "git [d]iff against index" })
-
-        -- '@' means HEAD in git, so this compares with last committed version
         map("n", "<leader>hD", function()
           gitsigns.diffthis("@")
         end, { desc = "git [D]iff against last commit" })
 
-        -- Toggles
-        -- Shows blame info at end of each line (updates as you move cursor)
+        -- Toggle features
         map("n", "<leader>tb", gitsigns.toggle_current_line_blame, { desc = "[T]oggle git show [b]lame line" })
-
-        -- Shows deleted lines inline in the buffer (what was there before current changes)
         map("n", "<leader>tD", gitsigns.toggle_deleted, { desc = "[T]oggle git show [D]eleted" })
+        map("n", "<leader>tl", gitsigns.toggle_linehl, { desc = "[T]oggle line high[l]ight" })
+        map("n", "<leader>tn", gitsigns.toggle_numhl, { desc = "[T]oggle [n]umber highlight" })
+        map("n", "<leader>tw", gitsigns.toggle_word_diff, { desc = "[T]oggle [w]ord diff" })
+
+        -- Additional operations
+        map("n", "<leader>hq", gitsigns.setqflist, { desc = "git changes to [q]uickfix" })
+
+        -- Text objects for vim motions
+        map({ "o", "x" }, "ih", ":<C-U>Gitsigns select_hunk<CR>", { desc = "inner hunk" })
+        map({ "o", "x" }, "ah", ":<C-U>Gitsigns select_hunk<CR>", { desc = "outer hunk" })
       end,
     },
+
+    -- Configure custom highlight groups
+    config = function(_, opts)
+      require("gitsigns").setup(opts)
+
+      -- Define custom colors (similar to VSCode Git colors)
+      vim.api.nvim_set_hl(0, "GitSignsAdd", { fg = "#587c0c", bg = "NONE" })
+      vim.api.nvim_set_hl(0, "GitSignsChange", { fg = "#0c7d9d", bg = "NONE" })
+      vim.api.nvim_set_hl(0, "GitSignsDelete", { fg = "#94151b", bg = "NONE" })
+      vim.api.nvim_set_hl(0, "GitSignsUntracked", { fg = "#ff8800", bg = "NONE" })
+
+      -- Staged signs colors (brighter)
+      vim.api.nvim_set_hl(0, "GitSignsStagedAdd", { fg = "#73c936", bg = "NONE" })
+      vim.api.nvim_set_hl(0, "GitSignsStagedChange", { fg = "#4fc1ff", bg = "NONE" })
+      vim.api.nvim_set_hl(0, "GitSignsStagedDelete", { fg = "#ff5555", bg = "NONE" })
+
+      -- Line number colors
+      vim.api.nvim_set_hl(0, "GitSignsAddNr", { fg = "#587c0c", bg = "NONE" })
+      vim.api.nvim_set_hl(0, "GitSignsChangeNr", { fg = "#0c7d9d", bg = "NONE" })
+      vim.api.nvim_set_hl(0, "GitSignsDeleteNr", { fg = "#94151b", bg = "NONE" })
+
+      -- Current line blame virtual text color
+      vim.api.nvim_set_hl(0, "GitSignsCurrentLineBlame", { fg = "#65676b", italic = true })
+    end,
   },
 }
--- vim: ts=2 sts=2 sw=2 et

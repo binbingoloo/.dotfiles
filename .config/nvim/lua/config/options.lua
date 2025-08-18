@@ -49,5 +49,9 @@ vim.opt.splitright = true
 vim.opt.splitbelow = true
 
 -- Faster completion and key sequence response
-vim.opt.updatetime = 300
-vim.opt.timeoutlen = 500
+vim.opt.updatetime = 100
+vim.opt.timeoutlen = 300
+
+vim.opt.foldmethod = "expr"
+vim.opt.foldexpr = "nvim_treesitter#foldexpr()"
+vim.opt.foldenable = false

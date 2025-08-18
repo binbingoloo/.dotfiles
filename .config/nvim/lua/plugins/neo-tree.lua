@@ -17,6 +17,41 @@ return {
     { "\\", ":Neotree reveal<CR>", desc = "NeoTree reveal", silent = true },
   },
   opts = {
+    default_component_configs = {
+      icon = {
+        folder_closed = "",
+        folder_open = "",
+        folder_empty = "󰜌",
+      },
+      git_status = {
+        symbols = {
+          added = "✚",
+          modified = "", -- or ""
+          deleted = "✖",
+          renamed = "󰁕",
+          untracked = "",
+          ignored = "",
+          unstaged = "󰄱",
+          staged = "",
+          conflict = "",
+        },
+      },
+    },
+
+    window = {
+      mappings = {
+        -- Pressing \ inside neo-tree closes it
+        ["\\"] = "close_window",
+        ["E"] = "expand_all_nodes",
+        ["W"] = "close_all_nodes",
+        ["<space>"] = {
+          "toggle_preview",
+          nowait = true,
+          config = { use_float = false },
+        },
+      },
+    },
+
     filesystem = {
       filtered_items = {
         visible = true,
@@ -28,13 +63,6 @@ return {
           "node_modules",
           ".DS_Store",
           "__pycache__",
-        },
-      },
-      window = {
-        mappings = {
-          -- Same key to toggle: pressing \ inside neo-tree closes it
-          -- Creates a toggle behavior - one key to open and close
-          ["\\"] = "close_window",
         },
       },
     },

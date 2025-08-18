@@ -37,3 +37,12 @@ require("lazy").setup({
     },
   },
 })
+
+vim.api.nvim_create_autocmd("VimEnter", {
+  pattern = "*",
+  callback = function()
+    vim.defer_fn(function()
+      require("lazy").update({ show = false })
+    end, 1000)
+  end,
+})

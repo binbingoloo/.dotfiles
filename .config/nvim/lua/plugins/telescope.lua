@@ -74,6 +74,7 @@ return {
       -- This allows the config to work even if you remove the extension dependencies
       pcall(require("telescope").load_extension, "fzf")
       pcall(require("telescope").load_extension, "ui-select")
+      pcall(require("telescope").load_extension, "noice")
 
       local builtin = require("telescope.builtin")
 

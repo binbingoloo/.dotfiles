@@ -28,11 +28,13 @@ function M.setup()
   -- Copy operations
   wezterm.on("copy-buffer-from-pane", M.copy_buffer)
   wezterm.on("copy-text-from-pane", M.copy_text)
-  wezterm.on("flash-terminal", function(window) functions.flash_screen(window) end)
+  wezterm.on("flash-terminal", function(window)
+    functions.flash_screen(window)
+  end)
 
   -- Workspace management
   wezterm.on("set-previous-workspace", M.set_previous_workspace)
-  wezterm.on('window-focus-changed', M.window_focus_changed)
+  wezterm.on("window-focus-changed", M.window_focus_changed)
 end
 
 function M.update_status(window, pane)
@@ -84,11 +86,11 @@ function M.format_tab_title(tab)
   -- Add program icon
   if program and program ~= "" then
     local command = program:match("^%S+")
-      local icon = PROGRAM_ICONS[command]
+    local icon = PROGRAM_ICONS[command]
     if not icon and command and command:match("^[bh]?top") then
-        icon = nerdfonts.md_monitor_eye
-      end
-      title = (icon or nerdfonts.dev_terminal) .. " " .. title
+      icon = nerdfonts.md_monitor_eye
+    end
+    title = (icon or nerdfonts.dev_terminal) .. " " .. title
   end
 
   -- Check for unseen output
@@ -138,7 +140,7 @@ function M.gui_startup()
   for _, space in pairs(workspaces.config.spaces) do
     local _, _, window = mux.spawn_window({
       workspace = space.name,
-      cwd = space.path
+      cwd = space.path,
     })
 
     if space.tabs then

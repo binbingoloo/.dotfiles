@@ -28,32 +28,41 @@ function M.get_keys()
 
     -- Clipboard
     { key = "v", mods = "CMD", action = action.PasteFrom("Clipboard") },
-    { key = "c", mods = "CMD", action = action.Multiple {
+    {
+      key = "c",
+      mods = "CMD",
+      action = action.Multiple({
         action.CopyTo("ClipboardAndPrimarySelection"),
-        action.ClearSelection
-      }
+        action.ClearSelection,
+      }),
     },
 
     -- Tab management
     { key = "t", mods = "CMD", action = action.SpawnTab("DefaultDomain") },
-    { key = "w", mods = "CMD", action = action.CloseCurrentPane { confirm = false } },
-    { key = "t", mods = "LEADER", action = action.ShowLauncherArgs { flags = "TABS" } },
+    { key = "w", mods = "CMD", action = action.CloseCurrentPane({ confirm = false }) },
+    { key = "t", mods = "LEADER", action = action.ShowLauncherArgs({ flags = "TABS" }) },
 
     -- Workspace
-    { key = "l", mods = "LEADER", action = wezterm.action_callback(function(window, pane)
+    {
+      key = "l",
+      mods = "LEADER",
+      action = wezterm.action_callback(function(window, pane)
         functions.switch_previous_workspace(window, pane)
-        window:perform_action(action.EmitEvent "set-previous-workspace", pane)
-      end)
+        window:perform_action(action.EmitEvent("set-previous-workspace"), pane)
+      end),
     },
-    { key = "s", mods = "LEADER", action = action.Multiple {
-        action.ShowLauncherArgs { flags = "FUZZY|WORKSPACES" },
-        action.EmitEvent "set-previous-workspace"
-      }
+    {
+      key = "s",
+      mods = "LEADER",
+      action = action.Multiple({
+        action.ShowLauncherArgs({ flags = "FUZZY|WORKSPACES" }),
+        action.EmitEvent("set-previous-workspace"),
+      }),
     },
 
     -- Pane operations
-    { key = "-", mods = "LEADER", action = action.SplitVertical { domain = "CurrentPaneDomain" } },
-    { key = "\\", mods = "LEADER", action = action.SplitHorizontal { domain = "CurrentPaneDomain" } },
+    { key = "-", mods = "LEADER", action = action.SplitVertical({ domain = "CurrentPaneDomain" }) },
+    { key = "\\", mods = "LEADER", action = action.SplitHorizontal({ domain = "CurrentPaneDomain" }) },
     { key = "z", mods = "LEADER", action = action.TogglePaneZoomState },
 
     -- Navigation
@@ -63,13 +72,13 @@ function M.get_keys()
     { key = "DownArrow", mods = "OPT", action = action.ActivatePaneDirection("Down") },
 
     -- Vim-style scrolling
-    { key = "k", mods = "OPT", action = action.ScrollByLine(-1) },     -- Scroll up one line
-    { key = "j", mods = "OPT", action = action.ScrollByLine(1) },      -- Scroll down one line
-    { key = "u", mods = "OPT", action = action.ScrollByPage(-0.5) },   -- Scroll up half page
-    { key = "d", mods = "OPT", action = action.ScrollByPage(0.5) },    -- Scroll down half page
-    { key = "b", mods = "OPT", action = action.ScrollByPage(-1) },     -- Scroll up full page
-    { key = "f", mods = "OPT", action = action.ScrollByPage(1) },      -- Scroll down full page
-    { key = "g", mods = "OPT", action = action.ScrollToTop },          -- Jump to top
+    { key = "k", mods = "OPT", action = action.ScrollByLine(-1) }, -- Scroll up one line
+    { key = "j", mods = "OPT", action = action.ScrollByLine(1) }, -- Scroll down one line
+    { key = "u", mods = "OPT", action = action.ScrollByPage(-0.5) }, -- Scroll up half page
+    { key = "d", mods = "OPT", action = action.ScrollByPage(0.5) }, -- Scroll down half page
+    { key = "b", mods = "OPT", action = action.ScrollByPage(-1) }, -- Scroll up full page
+    { key = "f", mods = "OPT", action = action.ScrollByPage(1) }, -- Scroll down full page
+    { key = "g", mods = "OPT", action = action.ScrollToTop }, -- Jump to top
     { key = "g", mods = "OPT|SHIFT", action = action.ScrollToBottom }, -- Jump to bottom
 
     -- Font size
@@ -82,16 +91,26 @@ function M.get_keys()
     { key = "]", mods = "CMD|SHIFT", action = action.ActivateTabRelative(1) },
 
     -- Workspace navigation
-    { key = "[", mods = "CMD|OPT", action = action.Multiple {
-        action.SwitchWorkspaceRelative(-1), action.EmitEvent "set-previous-workspace" }
+    {
+      key = "[",
+      mods = "CMD|OPT",
+      action = action.Multiple({
+        action.SwitchWorkspaceRelative(-1),
+        action.EmitEvent("set-previous-workspace"),
+      }),
     },
-    { key = "]", mods = "CMD|OPT", action = action.Multiple {
-        action.SwitchWorkspaceRelative(1), action.EmitEvent "set-previous-workspace" }
+    {
+      key = "]",
+      mods = "CMD|OPT",
+      action = action.Multiple({
+        action.SwitchWorkspaceRelative(1),
+        action.EmitEvent("set-previous-workspace"),
+      }),
     },
 
     -- Utility
-    { key = "/", mods = "CMD", action = action.Search { CaseInSensitiveString = "" } },
-    { key = "c", mods = "LEADER", action = action.ShowLauncherArgs { flags = "FUZZY|LAUNCH_MENU_ITEMS" } },
+    { key = "/", mods = "CMD", action = action.Search({ CaseInSensitiveString = "" }) },
+    { key = "c", mods = "LEADER", action = action.ShowLauncherArgs({ flags = "FUZZY|LAUNCH_MENU_ITEMS" }) },
     -- { key = "d", mods = "LEADER", action = action.ShowDebugOverlay },
     { key = "h", mods = "LEADER", action = action.ActivateCommandPalette },
     { key = "v", mods = "LEADER", action = action.ActivateCopyMode },
@@ -109,7 +128,7 @@ function M.get_keys()
         local cheatsheets_dir = home .. "/.config/wezterm/cheatsheets"
 
         local choices = {}
-        local handle = io.popen('ls -1 ' .. cheatsheets_dir .. ' 2>/dev/null')
+        local handle = io.popen("ls -1 " .. cheatsheets_dir .. " 2>/dev/null")
         if handle then
           for file in handle:lines() do
             table.insert(choices, {
@@ -121,25 +140,25 @@ function M.get_keys()
         end
 
         window:perform_action(
-          wezterm.action.InputSelector {
+          wezterm.action.InputSelector({
             title = "Select Cheatsheet",
             choices = choices,
             fuzzy = true,
             action = wezterm.action_callback(function(inner_window, inner_pane, id, label)
               if id then
                 inner_window:perform_action(
-                  wezterm.action.SpawnCommandInNewWindow {
-                    args = { 'zsh', '-lc', 'bat --paging=always ~/.config/wezterm/cheatsheets/' .. id }
-                  },
+                  wezterm.action.SpawnCommandInNewWindow({
+                    args = { "zsh", "-lc", "bat --paging=always ~/.config/wezterm/cheatsheets/" .. id },
+                  }),
                   inner_pane
                 )
               end
             end),
-          },
+          }),
           pane
         )
       end),
-    }
+    },
   }
 
   -- Number keys for tab activation
@@ -153,14 +172,14 @@ end
 function M.get_key_tables()
   return {
     copy = {
-      { key = "b", action = action.EmitEvent "copy-buffer-from-pane" },
-      { key = "p", action = action.EmitEvent "copy-text-from-pane" },
+      { key = "b", action = action.EmitEvent("copy-buffer-from-pane") },
+      { key = "p", action = action.EmitEvent("copy-text-from-pane") },
       { key = "l", action = M.copy_line_action() },
       { key = "r", action = M.copy_regex_action() },
     },
 
     move = {
-      { key = "r", action = action.RotatePanes 'CounterClockwise' },
+      { key = "r", action = action.RotatePanes("CounterClockwise") },
       { key = "s", action = action.PaneSelect },
       { key = "Enter", action = "PopKeyTable" },
       { key = "Escape", action = "PopKeyTable" },
@@ -169,10 +188,10 @@ function M.get_key_tables()
     },
 
     resize = {
-      { key = "DownArrow", action = action.AdjustPaneSize { "Down", 1 } },
-      { key = "LeftArrow", action = action.AdjustPaneSize { "Left", 1 } },
-      { key = "RightArrow", action = action.AdjustPaneSize { "Right", 1 } },
-      { key = "UpArrow", action = action.AdjustPaneSize { "Up", 1 } },
+      { key = "DownArrow", action = action.AdjustPaneSize({ "Down", 1 }) },
+      { key = "LeftArrow", action = action.AdjustPaneSize({ "Left", 1 }) },
+      { key = "RightArrow", action = action.AdjustPaneSize({ "Right", 1 }) },
+      { key = "UpArrow", action = action.AdjustPaneSize({ "Up", 1 }) },
       { key = "Enter", action = "PopKeyTable" },
       { key = "Escape", action = "PopKeyTable" },
     },
@@ -181,38 +200,38 @@ function M.get_key_tables()
       { key = "p", action = M.spawn_command("Finder", { "open", "." }) },
       { key = "c", action = M.spawn_command("VS Code", { "zsh", "-lc", "code ." }) },
       { key = "u", action = M.open_url_action() },
-    }
+    },
   }
 end
 
 -- Helper functions
 function M.activate_table(name)
-  return action.ActivateKeyTable {
+  return action.ActivateKeyTable({
     name = name,
     one_shot = false,
     until_unknown = name ~= "move",
-    timeout_milliseconds = TIMEOUT.key
-  }
+    timeout_milliseconds = TIMEOUT.key,
+  })
 end
 
 function M.spawn_command(label, args)
-  return action.SpawnCommandInNewWindow { label = label, args = args }
+  return action.SpawnCommandInNewWindow({ label = label, args = args })
 end
 
 function M.copy_line_action()
-  return action.QuickSelectArgs {
+  return action.QuickSelectArgs({
     label = "COPY LINE",
     patterns = { "^.*\\S+.*$" },
     scope_lines = 1,
-    action = action.Multiple {
+    action = action.Multiple({
       action.CopyTo("ClipboardAndPrimarySelection"),
-      action.ClearSelection
-    }
-  }
+      action.ClearSelection,
+    }),
+  })
 end
 
 function M.copy_regex_action()
-  return action.QuickSelectArgs {
+  return action.QuickSelectArgs({
     label = "COPY REGEX",
     patterns = {
       "(\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}(?:/\\d{1,2})?)",
@@ -222,54 +241,56 @@ function M.copy_regex_action()
       "[[:xdigit:]]{12}",
       "\\S+/\\S+:\\S+",
       "[[:xdigit:]]{7,}",
-      "(?:https?|s?ftp)://\\S+"
+      "(?:https?|s?ftp)://\\S+",
     },
-    action = action.Multiple {
+    action = action.Multiple({
       action.CopyTo("ClipboardAndPrimarySelection"),
-      action.ClearSelection
-    }
-  }
+      action.ClearSelection,
+    }),
+  })
 end
 
 function M.open_url_action()
-  return action.QuickSelectArgs {
+  return action.QuickSelectArgs({
     label = "Open URL",
     patterns = { "https?://\\S+" },
     scope_lines = 30,
     action = wezterm.action_callback(function(window, pane)
       local url = window:get_selection_text_for_pane(pane)
       wezterm.open_with(url)
-    end)
-  }
+    end),
+  })
 end
 
 function M.rename_tab_prompt()
-  return action.PromptInputLine {
-    description = wezterm.format {
+  return action.PromptInputLine({
+    description = wezterm.format({
       { Attribute = { Intensity = "Bold" } },
       { Foreground = { Color = colors.fg() } },
-      { Text = "Rename tab:" }
-    },
+      { Text = "Rename tab:" },
+    }),
     action = wezterm.action_callback(function(window, _, line)
-      if line then window:active_tab():set_title(line) end
+      if line then
+        window:active_tab():set_title(line)
+      end
     end),
-  }
+  })
 end
 
 function M.rename_workspace_prompt()
-  return action.PromptInputLine {
-    description = wezterm.format {
+  return action.PromptInputLine({
+    description = wezterm.format({
       { Attribute = { Intensity = "Bold" } },
       { Foreground = { Color = colors.fg() } },
-      { Text = "Rename workspace:" }
-    },
+      { Text = "Rename workspace:" },
+    }),
     action = wezterm.action_callback(function(_, _, line)
       if line then
         local mux = wezterm.mux
         mux.rename_workspace(mux.get_active_workspace(), line)
       end
     end),
-  }
+  })
 end
 
 return M

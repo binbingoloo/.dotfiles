@@ -1,4 +1,3 @@
--- WezTerm Configuration
 local wezterm = require("wezterm")
 local config = wezterm.config_builder and wezterm.config_builder() or {}
 

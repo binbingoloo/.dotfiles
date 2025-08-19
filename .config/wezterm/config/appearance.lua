@@ -19,9 +19,9 @@ function M.apply(config)
         bg_color = colors.bg(),
         fg_color = colors.cursor(),
         italic = true,
-      }
+      },
     },
-    visual_bell = colors.red()
+    visual_bell = colors.red(),
   }
 
   -- Font configuration
@@ -35,10 +35,10 @@ function M.apply(config)
 
   -- Window appearance
   config.window_frame = {
-    border_left_width = '0cell',
-    border_right_width = '0cell',
-    border_bottom_height = '0cell',
-    border_top_height = '0.35cell',
+    border_left_width = "0cell",
+    border_right_width = "0cell",
+    border_bottom_height = "0cell",
+    border_top_height = "0.35cell",
     border_left_color = colors.bg(),
     border_right_color = colors.bg(),
     border_bottom_color = colors.bg(),
@@ -53,11 +53,11 @@ function M.apply(config)
   config.window_background_opacity = 0.95
 
   config.visual_bell = {
-    fade_in_function = 'Constant',
+    fade_in_function = "Constant",
     fade_in_duration_ms = 0,
-    fade_out_function = 'Constant',
+    fade_out_function = "Constant",
     fade_out_duration_ms = 300,
-    target = 'CursorColor',
+    target = "CursorColor",
   }
 
   config.inactive_pane_hsb = { brightness = 0.6, hue = 1.0, saturation = 0.6 }

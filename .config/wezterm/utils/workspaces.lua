@@ -18,7 +18,7 @@ M.config = {
     --   path = os.getenv("HOME") .. "/Work",
     --   tabs = { "frontend", "backend", "docs" }
     -- },
-  }
+  },
 }
 
 return M

@@ -26,12 +26,22 @@ function M.get_mouse_bindings()
   local action = wezterm.action
   return {
     { event = { Down = { streak = 1, button = "Right" } }, mods = "NONE", action = action.PasteFrom("Clipboard") },
-    { event = { Down = { streak = 1, button = "Left" } }, mods = "NONE", action = action.Multiple { action.ClearSelection } },
+    {
+      event = { Down = { streak = 1, button = "Left" } },
+      mods = "NONE",
+      action = action.Multiple({ action.ClearSelection }),
+    },
     { event = { Up = { streak = 1, button = "Left" } }, mods = "NONE", action = action.Nop },
-    { event = { Up = { streak = 2, button = "Left" } }, mods = "NONE",
-      action = action.Multiple { action.CopyTo "ClipboardAndPrimarySelection", action.ClearSelection } },
-    { event = { Up = { streak = 3, button = "Left" } }, mods = "NONE",
-      action = action.Multiple { action.CopyTo "ClipboardAndPrimarySelection", action.ClearSelection } },
+    {
+      event = { Up = { streak = 2, button = "Left" } },
+      mods = "NONE",
+      action = action.Multiple({ action.CopyTo("ClipboardAndPrimarySelection"), action.ClearSelection }),
+    },
+    {
+      event = { Up = { streak = 3, button = "Left" } },
+      mods = "NONE",
+      action = action.Multiple({ action.CopyTo("ClipboardAndPrimarySelection"), action.ClearSelection }),
+    },
     { event = { Up = { streak = 1, button = "Left" } }, mods = "CMD", action = action.OpenLinkAtMouseCursor },
   }
 end

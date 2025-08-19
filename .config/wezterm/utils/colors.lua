@@ -4,8 +4,8 @@ local M = {}
 
 -- Theme configuration
 local themes = {
-  dark = "Catppuccin Frappe",
-  light = "Catppuccin Mocha",
+  dark = "Catppuccin Mocha",
+  light = "Catppuccin Latte",
 }
 
 -- Color cache
@@ -42,16 +42,38 @@ function M.get_all()
 end
 
 -- Quick color accessors
-function M.bg() return M.get("background", "#303446") end
-function M.fg() return M.get("foreground", "#c6d0f5") end
-function M.cursor() return M.get(16, "#c6d0f5") end
-function M.red() return M.get(1, "#e78284") end
-function M.green() return M.get(2, "#a6e3a1") end
-function M.yellow() return M.get(3, "#f5c2e7") end
-function M.blue() return M.get(4, "#89b4fa") end
-function M.magenta() return M.get(5, "#ca9ee6") end
-function M.cyan() return M.get(6, "#94e2d5") end
-function M.white() return M.get(7, "#f4b8e4") end
-function M.bright_black() return M.get(8, "#a5adce") end
+function M.bg()
+  return M.get("background", "#303446")
+end
+function M.fg()
+  return M.get("foreground", "#c6d0f5")
+end
+function M.cursor()
+  return M.get(16, "#c6d0f5")
+end
+function M.red()
+  return M.get(1, "#e78284")
+end
+function M.green()
+  return M.get(2, "#a6e3a1")
+end
+function M.yellow()
+  return M.get(3, "#f5c2e7")
+end
+function M.blue()
+  return M.get(4, "#89b4fa")
+end
+function M.magenta()
+  return M.get(5, "#ca9ee6")
+end
+function M.cyan()
+  return M.get(6, "#94e2d5")
+end
+function M.white()
+  return M.get(7, "#f4b8e4")
+end
+function M.bright_black()
+  return M.get(8, "#a5adce")
+end
 
 return M

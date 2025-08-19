@@ -15,7 +15,7 @@ function M.file_exists(name)
 end
 
 function M.basename(path)
-  return string.gsub(path, '(.*[/\\])(.*)', '%2')
+  return string.gsub(path, "(.*[/\\])(.*)", "%2")
 end
 
 -- Tab utilities
@@ -29,7 +29,9 @@ end
 
 function M.get_cwd(pane, max_width)
   local cwd = pane:get_current_working_dir()
-  if not cwd then return "" end
+  if not cwd then
+    return ""
+  end
 
   if type(cwd) == "userdata" then
     cwd = cwd.path
@@ -50,7 +52,9 @@ end
 -- Workspace management
 function M.switch_workspace(window, pane, workspace)
   local current = window:active_workspace()
-  if current == workspace then return end
+  if current == workspace then
+    return
+  end
 
   window:perform_action(action.SwitchToWorkspace({ name = workspace }), pane)
   wezterm.GLOBAL.previous_workspace = current

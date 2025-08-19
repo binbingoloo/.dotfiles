@@ -45,25 +45,25 @@ return {
       desc = "Debug: Step Out",
     },
     {
-      "<leader>b",
+      "<leader>db",
       function()
         require("dap").toggle_breakpoint()
       end,
       desc = "Debug: Toggle Breakpoint",
     },
     {
-      "<leader>B",
+      "<leader>dB",
       function()
         require("dap").set_breakpoint(vim.fn.input("Breakpoint condition: "))
       end,
-      desc = "Debug: Set Breakpoint",
+      desc = "Debug: Set Conditional Breakpoint",
     },
     {
       "<F7>",
       function()
         require("dapui").toggle()
       end,
-      desc = "Debug: See last session result.",
+      desc = "Debug: Toggle UI",
     },
   },
   config = function()

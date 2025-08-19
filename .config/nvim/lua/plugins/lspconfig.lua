@@ -1,8 +1,6 @@
 return {
   {
     -- Provides completion and type information for Neovim Lua API
-    -- This plugin enhances the development experience when writing Neovim configuration
-    -- by providing accurate completions, type checking, and documentation
     "folke/lazydev.nvim",
     ft = "lua",
     opts = {
@@ -27,8 +25,6 @@ return {
       "saghen/blink.cmp",
     },
     config = function()
-      -- LSP (Language Server Protocol) enables IDE-like features in Neovim
-      -- This autocmd runs when an LSP client attaches to a buffer
       vim.api.nvim_create_autocmd("LspAttach", {
         desc = "LSP keymaps and settings",
         group = vim.api.nvim_create_augroup("lsp-attach", { clear = true }),
@@ -39,39 +35,53 @@ return {
             vim.keymap.set(mode, keys, func, { buffer = event.buf, desc = "LSP: " .. desc })
           end
 
-          -- Rename symbols across the entire project (variables, functions, classes)
-          -- Most LSPs handle renaming in all files where the symbol is used
-          map("grn", vim.lsp.buf.rename, "[R]e[n]ame")
+          -- Jump to where a symbol is defined (most common operation)
+          -- Usage: Place cursor on a function/variable and press 'gd'
+          map("gd", require("telescope.builtin").lsp_definitions, "[G]oto [D]efinition")
 
-          -- Code actions are context-aware fixes or refactoring options
-          -- Examples: fix imports, extract method, implement interface
-          map("gra", vim.lsp.buf.code_action, "[G]oto Code [A]ction", { "n", "x" })
+          -- Jump to declaration (different from definition in C/C++)
+          -- Usage: In C/C++, jumps to forward declaration in header files
+          map("gD", vim.lsp.buf.declaration, "[G]oto [D]eclaration")
 
-          -- Find all locations where the symbol under cursor is referenced
-          map("grr", require("telescope.builtin").lsp_references, "[G]oto [R]eferences")
+          -- Find concrete implementations of an interface/abstract method
+          -- Usage: On an interface method, find all classes that implement it
+          map("gi", require("telescope.builtin").lsp_implementations, "[G]oto [I]mplementation")
 
-          -- Implementation differs from definition - shows concrete implementations
-          -- Example: for an interface method, shows all classes implementing it
-          map("gri", require("telescope.builtin").lsp_implementations, "[G]oto [I]mplementation")
+          -- Navigate to the type definition of a symbol
+          -- Usage: On a variable, jump to its type/class definition
+          map("gt", require("telescope.builtin").lsp_type_definitions, "[G]oto [T]ype Definition")
 
-          -- Jump to where a symbol is defined (not just declared)
-          -- Press <C-t> to jump back to previous location
-          map("grd", require("telescope.builtin").lsp_definitions, "[G]oto [D]efinition")
+          -- Find all places where a symbol is used
+          -- Usage: See all usages of a function/variable across the project
+          map("gr", require("telescope.builtin").lsp_references, "[G]oto [R]eferences")
 
-          -- Declaration is distinct from definition in languages like C/C++
-          -- Declaration: function signature in header file
-          -- Definition: actual function body in source file
-          map("grD", vim.lsp.buf.declaration, "[G]oto [D]eclaration")
+          -- List all symbols in the current file (functions, classes, variables)
+          -- Usage: Quick overview and navigation within current file
+          map("gs", require("telescope.builtin").lsp_document_symbols, "[G]oto [S]ymbols (Document)")
 
-          -- List all symbols (functions, variables, classes) in current file
-          map("gO", require("telescope.builtin").lsp_document_symbols, "Open Document Symbols")
+          -- Search symbols across the entire workspace/project
+          -- Usage: Find classes/functions by name across all files
+          map("gS", require("telescope.builtin").lsp_dynamic_workspace_symbols, "[G]oto [S]ymbols (Workspace)")
 
-          -- Search symbols across entire workspace/project
-          map("gW", require("telescope.builtin").lsp_dynamic_workspace_symbols, "Open Workspace Symbols")
+          -- Show available code actions (fixes, refactors, imports)
+          -- Usage: Fix errors, add imports, extract methods, etc.
+          map("ga", vim.lsp.buf.code_action, "[G]oto Code [A]ction", { "n", "x" })
+          map("<leader>ca", vim.lsp.buf.code_action, "[C]ode [A]ction", { "n", "x" })
 
-          -- Type definition navigates to the type's declaration, not the variable's
-          -- Example: for 'const user: User', jumps to the User type definition
-          map("grt", require("telescope.builtin").lsp_type_definitions, "[G]oto [T]ype Definition")
+          -- Rename symbol across the entire project
+          -- Usage: Safely rename variables/functions with all references
+          map("<leader>rn", vim.lsp.buf.rename, "[R]e[n]ame")
+
+          -- Show hover documentation for symbol under cursor
+          -- Usage: Quick info about functions, parameters, types
+          map("K", vim.lsp.buf.hover, "Hover Documentation")
+
+          -- Show function signature help
+          -- Usage: See parameter hints while typing function calls
+          map("gK", vim.lsp.buf.signature_help, "Signature Help")
+
+          -- Show diagnostics in floating window
+          map("<leader>cd", vim.diagnostic.open_float, "[C]ode [D]iagnostics")
 
           -- Compatibility wrapper for different Neovim versions
           -- Neovim 0.11 changed the method signature for supports_method

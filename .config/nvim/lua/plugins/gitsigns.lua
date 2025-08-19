@@ -53,7 +53,7 @@ return {
           else
             gitsigns.nav_hunk("next")
           end
-        end, { desc = "Jump to next git [c]hange" })
+        end, { desc = "[J]ump to [N]ext git change" })
 
         map("n", "[c", function()
           if vim.wo.diff then
@@ -61,47 +61,47 @@ return {
           else
             gitsigns.nav_hunk("prev")
           end
-        end, { desc = "Jump to previous git [c]hange" })
+        end, { desc = "[J]ump to [P]revious git change" })
 
         -- Visual mode: stage/reset only selected lines
         map("v", "<leader>hs", function()
           gitsigns.stage_hunk({ vim.fn.line("."), vim.fn.line("v") })
-        end, { desc = "git [s]tage hunk" })
+        end, { desc = "[S]tage [H]unk" })
         map("v", "<leader>hr", function()
           gitsigns.reset_hunk({ vim.fn.line("."), vim.fn.line("v") })
-        end, { desc = "git [r]eset hunk" })
+        end, { desc = "[R]eset [H]unk" })
 
         -- Normal mode: stage/reset entire hunk under cursor
-        map("n", "<leader>hs", gitsigns.stage_hunk, { desc = "git [s]tage hunk" })
-        map("n", "<leader>hr", gitsigns.reset_hunk, { desc = "git [r]eset hunk" })
-        map("n", "<leader>hS", gitsigns.stage_buffer, { desc = "git [S]tage buffer" })
-        map("n", "<leader>hu", gitsigns.undo_stage_hunk, { desc = "git [u]ndo stage hunk" })
-        map("n", "<leader>hR", gitsigns.reset_buffer, { desc = "git [R]eset buffer" })
-        map("n", "<leader>hp", gitsigns.preview_hunk, { desc = "git [p]review hunk" })
+        map("n", "<leader>hs", gitsigns.stage_hunk, { desc = "[S]tage [H]unk" })
+        map("n", "<leader>hr", gitsigns.reset_hunk, { desc = "[R]eset [H]unk" })
+        map("n", "<leader>hS", gitsigns.stage_buffer, { desc = "[S]tage [B]uffer" })
+        map("n", "<leader>hu", gitsigns.undo_stage_hunk, { desc = "[U]ndo [S]tage hunk" })
+        map("n", "<leader>hR", gitsigns.reset_buffer, { desc = "[R]eset [B]uffer" })
+        map("n", "<leader>hp", gitsigns.preview_hunk, { desc = "[P]review [H]unk" })
 
         -- Blame and diff operations
-        map("n", "<leader>hb", gitsigns.blame_line, { desc = "git [b]lame line" })
+        map("n", "<leader>hb", gitsigns.blame_line, { desc = "[B]lame [L]ine" })
         map("n", "<leader>hB", function()
           gitsigns.blame_line({ full = true })
-        end, { desc = "git [B]lame line (full)" })
-        map("n", "<leader>hd", gitsigns.diffthis, { desc = "git [d]iff against index" })
+        end, { desc = "[B]lame [L]ine (full)" })
+        map("n", "<leader>hd", gitsigns.diffthis, { desc = "[D]iff against [I]ndex" })
         map("n", "<leader>hD", function()
           gitsigns.diffthis("@")
-        end, { desc = "git [D]iff against last commit" })
+        end, { desc = "[D]iff against [L]ast commit" })
 
         -- Toggle features
-        map("n", "<leader>tb", gitsigns.toggle_current_line_blame, { desc = "[T]oggle git show [b]lame line" })
-        map("n", "<leader>tD", gitsigns.toggle_deleted, { desc = "[T]oggle git show [D]eleted" })
-        map("n", "<leader>tl", gitsigns.toggle_linehl, { desc = "[T]oggle line high[l]ight" })
-        map("n", "<leader>tn", gitsigns.toggle_numhl, { desc = "[T]oggle [n]umber highlight" })
-        map("n", "<leader>tw", gitsigns.toggle_word_diff, { desc = "[T]oggle [w]ord diff" })
+        map("n", "<leader>tb", gitsigns.toggle_current_line_blame, { desc = "[T]oggle [B]lame line" })
+        map("n", "<leader>tD", gitsigns.toggle_deleted, { desc = "[T]oggle show [D]eleted" })
+        map("n", "<leader>tl", gitsigns.toggle_linehl, { desc = "[T]oggle [L]ine highlight" })
+        map("n", "<leader>tn", gitsigns.toggle_numhl, { desc = "[T]oggle [N]umber highlight" })
+        map("n", "<leader>tw", gitsigns.toggle_word_diff, { desc = "[T]oggle [W]ord diff" })
 
         -- Additional operations
-        map("n", "<leader>hq", gitsigns.setqflist, { desc = "git changes to [q]uickfix" })
+        map("n", "<leader>hq", gitsigns.setqflist, { desc = "[S]end to [Q]uickfix" })
 
         -- Text objects for vim motions
-        map({ "o", "x" }, "ih", ":<C-U>Gitsigns select_hunk<CR>", { desc = "inner hunk" })
-        map({ "o", "x" }, "ah", ":<C-U>Gitsigns select_hunk<CR>", { desc = "outer hunk" })
+        map({ "o", "x" }, "ih", ":<C-U>Gitsigns select_hunk<CR>", { desc = "[I]nner [H]unk" })
+        map({ "o", "x" }, "ah", ":<C-U>Gitsigns select_hunk<CR>", { desc = "[A]round [H]unk" })
       end,
     },
 

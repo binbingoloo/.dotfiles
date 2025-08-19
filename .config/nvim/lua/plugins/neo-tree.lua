@@ -8,13 +8,10 @@ return {
     -- UI component library for floating windows
     "MunifTanjim/nui.nvim",
   },
-  -- Load immediately on startup to register commands (even though we open it with keymap)
-  -- This ensures :Neotree commands are available right away
+  -- Ensures :Neotree commands are available right away
   lazy = false,
   keys = {
-    -- "reveal" opens neo-tree and highlights the current file (shows where you are)
-    -- Better than just "open" which doesn't navigate to current file location
-    { "\\", ":Neotree reveal<CR>", desc = "NeoTree reveal", silent = true },
+    { "\\", ":Neotree reveal<CR>", desc = "[R]eveal in [N]eoTree", silent = true },
   },
   opts = {
     default_component_configs = {
@@ -47,7 +44,7 @@ return {
         ["<space>"] = {
           "toggle_preview",
           nowait = true,
-          config = { use_float = false },
+          config = { use_float = true },
         },
       },
     },

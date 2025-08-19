@@ -8,44 +8,44 @@ return {
     event = "VeryLazy",
     keys = {
       -- Switch between buffers
-      { "<S-h>", "<cmd>BufferLineCyclePrev<cr>", desc = "Prev Buffer" },
-      { "<S-l>", "<cmd>BufferLineCycleNext<cr>", desc = "Next Buffer" },
-      { "<Tab>", "<cmd>BufferLineCycleNext<cr>", desc = "Next Buffer" },
-      { "<S-Tab>", "<cmd>BufferLineCyclePrev<cr>", desc = "Prev Buffer" },
+      { "<S-h>", "<cmd>BufferLineCyclePrev<cr>", desc = "[G]o to [P]revious Buffer" },
+      { "<S-l>", "<cmd>BufferLineCycleNext<cr>", desc = "[G]o to [N]ext Buffer" },
+      { "<Tab>", "<cmd>BufferLineCycleNext<cr>", desc = "[G]o to [N]ext Buffer" },
+      { "<S-Tab>", "<cmd>BufferLineCyclePrev<cr>", desc = "[G]o to [P]revious Buffer" },
 
       -- Buffer management
-      { "<leader>bp", "<Cmd>BufferLineTogglePin<CR>", desc = "Toggle Pin" },
-      { "<leader>bo", "<Cmd>BufferLineCloseOthers<CR>", desc = "Close Other Buffers" },
-      { "<leader>br", "<Cmd>BufferLineCloseRight<CR>", desc = "Close Buffers to the Right" },
-      { "<leader>bl", "<Cmd>BufferLineCloseLeft<CR>", desc = "Close Buffers to the Left" },
-      { "<leader>bs", "<cmd>BufferLinePick<cr>", desc = "Select buffer" },
-      { "<leader>bc", "<cmd>BufferLinePickClose<cr>", desc = "Pick close buffer" },
+      { "<leader>bp", "<Cmd>BufferLineTogglePin<CR>", desc = "[T]oggle [P]in Buffer" },
+      { "<leader>bo", "<Cmd>BufferLineCloseOthers<CR>", desc = "[C]lose [O]ther Buffers" },
+      { "<leader>br", "<Cmd>BufferLineCloseRight<CR>", desc = "[C]lose Buffers to [R]ight" },
+      { "<leader>bl", "<Cmd>BufferLineCloseLeft<CR>", desc = "[C]lose Buffers to [L]eft" },
+      { "<leader>bs", "<cmd>BufferLinePick<cr>", desc = "[S]elect [B]uffer" },
+      { "<leader>bc", "<cmd>BufferLinePickClose<cr>", desc = "[P]ick [C]lose Buffer" },
 
       -- Quick jump to buffer by number
-      { "<leader>1", "<cmd>BufferLineGoToBuffer 1<cr>", desc = "Go to buffer 1" },
-      { "<leader>2", "<cmd>BufferLineGoToBuffer 2<cr>", desc = "Go to buffer 2" },
-      { "<leader>3", "<cmd>BufferLineGoToBuffer 3<cr>", desc = "Go to buffer 3" },
-      { "<leader>4", "<cmd>BufferLineGoToBuffer 4<cr>", desc = "Go to buffer 4" },
-      { "<leader>5", "<cmd>BufferLineGoToBuffer 5<cr>", desc = "Go to buffer 5" },
-      { "<leader>6", "<cmd>BufferLineGoToBuffer 6<cr>", desc = "Go to buffer 6" },
-      { "<leader>7", "<cmd>BufferLineGoToBuffer 7<cr>", desc = "Go to buffer 7" },
-      { "<leader>8", "<cmd>BufferLineGoToBuffer 8<cr>", desc = "Go to buffer 8" },
-      { "<leader>9", "<cmd>BufferLineGoToBuffer 9<cr>", desc = "Go to buffer 9" },
-      { "<leader>$", "<cmd>BufferLineGoToBuffer -1<cr>", desc = "Go to last buffer" },
+      { "<leader>1", "<cmd>BufferLineGoToBuffer 1<cr>", desc = "[G]o to Buffer [1]" },
+      { "<leader>2", "<cmd>BufferLineGoToBuffer 2<cr>", desc = "[G]o to Buffer [2]" },
+      { "<leader>3", "<cmd>BufferLineGoToBuffer 3<cr>", desc = "[G]o to Buffer [3]" },
+      { "<leader>4", "<cmd>BufferLineGoToBuffer 4<cr>", desc = "[G]o to Buffer [4]" },
+      { "<leader>5", "<cmd>BufferLineGoToBuffer 5<cr>", desc = "[G]o to Buffer [5]" },
+      { "<leader>6", "<cmd>BufferLineGoToBuffer 6<cr>", desc = "[G]o to Buffer [6]" },
+      { "<leader>7", "<cmd>BufferLineGoToBuffer 7<cr>", desc = "[G]o to Buffer [7]" },
+      { "<leader>8", "<cmd>BufferLineGoToBuffer 8<cr>", desc = "[G]o to Buffer [8]" },
+      { "<leader>9", "<cmd>BufferLineGoToBuffer 9<cr>", desc = "[G]o to Buffer [9]" },
+      { "<leader>$", "<cmd>BufferLineGoToBuffer -1<cr>", desc = "[G]o to [L]ast Buffer" },
 
       {
         "<leader>bd",
         function()
           require("mini.bufremove").delete(0)
         end,
-        desc = "Delete Buffer",
+        desc = "[D]elete [B]uffer",
       },
       {
         "<leader>bD",
         function()
           require("mini.bufremove").delete(0, true)
         end,
-        desc = "Delete Buffer (Force)",
+        desc = "[D]elete [B]uffer (Force)",
       },
     },
     opts = {
@@ -112,26 +112,26 @@ return {
             bd(0)
           end
         end,
-        desc = "Delete Buffer",
+        desc = "[Q]uit [B]uffer",
       },
       {
         "<leader>Q",
         function()
           require("mini.bufremove").delete(0, true)
         end,
-        desc = "Delete Buffer (Force)",
+        desc = "[Q]uit [B]uffer (Force)",
       },
 
       -- Save related shortcuts - highly related to buffer management
-      { "<leader>w", "<cmd>write<cr>", desc = "Save File" },
-      { "<leader>W", "<cmd>wall<cr>", desc = "Save All Files" },
+      { "<leader>w", "<cmd>write<cr>", desc = "[W]rite [F]ile" },
+      { "<leader>W", "<cmd>wall<cr>", desc = "[W]rite [A]ll Files" },
       {
         "<leader>wq",
         function()
           vim.cmd.write()
           require("mini.bufremove").delete(0)
         end,
-        desc = "Save and Close Buffer",
+        desc = "[W]rite and [Q]uit Buffer",
       },
       {
         "<leader>wa",
@@ -140,10 +140,10 @@ return {
           vim.cmd("wall")
           vim.notify("All buffers saved", vim.log.levels.INFO)
         end,
-        desc = "Save All Buffers",
+        desc = "[W]rite [A]ll Buffers",
       },
 
-      { "<C-s>", "<cmd>write<cr>", desc = "Save File", mode = { "n", "i", "v" } },
+      { "<C-s>", "<cmd>write<cr>", desc = "[S]ave [F]ile", mode = { "n", "i", "v" } },
     },
   },
 }

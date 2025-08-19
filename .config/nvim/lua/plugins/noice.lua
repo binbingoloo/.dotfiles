@@ -97,42 +97,42 @@ return {
           require("noice").redirect(vim.fn.getcmdline())
         end,
         mode = "c",
-        desc = "Redirect Cmdline",
+        desc = "[R]edirect [C]mdline",
       },
       {
         "<leader>snl",
         function()
           require("noice").cmd("last")
         end,
-        desc = "Noice Last Message",
+        desc = "[S]how [L]ast Message",
       },
       {
         "<leader>snh",
         function()
           require("noice").cmd("history")
         end,
-        desc = "Noice History",
+        desc = "[S]how [H]istory",
       },
       {
         "<leader>sna",
         function()
           require("noice").cmd("all")
         end,
-        desc = "Noice All",
+        desc = "[S]how [A]ll Messages",
       },
       {
         "<leader>snd",
         function()
           require("noice").cmd("dismiss")
         end,
-        desc = "Dismiss All",
+        desc = "[D]ismiss [A]ll",
       },
       {
         "<leader>snt",
         function()
           require("noice").cmd("telescope")
         end,
-        desc = "Noice Telescope",
+        desc = "[S]earch with [T]elescope",
       },
       {
         "<c-f>",
@@ -143,7 +143,7 @@ return {
         end,
         silent = true,
         expr = true,
-        desc = "Scroll forward",
+        desc = "[S]croll [F]orward",
         mode = { "i", "n", "s" },
       },
       {
@@ -155,7 +155,7 @@ return {
         end,
         silent = true,
         expr = true,
-        desc = "Scroll backward",
+        desc = "[S]croll [B]ackward",
         mode = { "i", "n", "s" },
       },
     },

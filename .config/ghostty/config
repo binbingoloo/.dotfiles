@@ -1,0 +1,82 @@
+# Ghostty Configuration
+
+theme = catppuccin-latte
+
+# Font Settings
+font-family = JetBrainsMono Nerd Font
+font-size = 11
+# Better rendering on Retina displays
+font-thicken = true
+# More comfortable line spacing
+adjust-cell-height = 15%
+# Disable ligatures
+font-feature = -liga
+# Better 'l' distinction
+font-feature = ss01
+# Zero with dot
+font-feature = ss02
+# Better 'i' distinction
+font-feature = cv14
+
+# Window Appearance
+window-width = 155
+window-height = 35
+window-padding-x = 0
+window-padding-y = 0
+# Equal padding on all sides
+window-padding-balance = true
+# Modern macOS look
+# macos-titlebar-style = transparent
+# Depth effect
+background-blur-radius = 20
+
+# Enhanced Colors (overriding Catppuccin Latte)
+# Warmer, less harsh background
+# background = #faf4ed
+# Richer text color for better contrast
+foreground = #4c4f69
+# More vibrant cursor
+cursor-color = #1e66f5
+# Better selection visibility
+selection-background = #dce0e8
+selection-foreground = #4c4f69
+
+# Cursor
+cursor-style = block
+cursor-style-blink = true
+cursor-opacity = 0.9
+
+# Shell Integration
+shell-integration = zsh
+shell-integration-features = cursor,sudo,title
+
+# macOS Integration
+# Option key works as Alt in terminal apps
+macos-option-as-alt = true
+# Show proxy icon in titlebar
+macos-titlebar-proxy-icon = visible
+# Confirm before closing with running processes
+confirm-close-surface = false
+
+# Terminal Behavior
+# Extended history for log review
+scrollback-limit = 10000
+# Faster scrolling
+mouse-scroll-multiplier = 3
+# Don't auto-copy selections
+copy-on-select = false
+# Prevent accidental paste attacks
+clipboard-paste-protection = true
+# Explicit focus switching only
+focus-follows-mouse = false
+# Cleaner typing experience
+mouse-hide-while-typing = true
+
+# Performance
+# Single app instance
+gtk-single-instance = true
+# Keep app running in background
+quit-after-last-window-closed = false
+
+# Better contrast for light theme
+minimum-contrast = 1.3

@@ -1,15 +1,11 @@
--- WezTerm Configuration
-local wezterm = require("wezterm")
-local config = wezterm.config_builder and wezterm.config_builder() or {}
+local ok, init = pcall(require, "init")
 
--- Initialize color manager first
-local colors = require("utils.colors")
-colors.init()
+if not ok or type(init) ~= "table" or type(init.setup) ~= "function" then
+  local wezterm = require("wezterm")
+  wezterm.log_error("Failed to load init.lua: " .. tostring(init))
+  return {
+    font_size = 11.0,
+  }
+end
 
--- Apply configurations
-require("config.appearance").apply(config)
-require("config.launch").apply(config)
-require("config.keybindings").apply(config)
-require("config.events").setup()
-
-return config
+return init.setup()

@@ -1,3 +1,5 @@
+
+# --------------------
 # <type>(<scope>): <subject>
 #
 # <body>
@@ -6,7 +8,7 @@
 # Signed-off-by: Your Name <your.email@example.com>
 #
 # --- COMMIT END ---
-# Type can be 
+# Type can be
 #   feat:     new feature
 #   fix:      bug fix
 #   refactor: refactoring code
@@ -24,7 +26,7 @@
 #
 # --- Quick Examples ---
 #  feat(auth): add password reset functionality
-#  fix(ui): correct button alignment on mobile devices  
+#  fix(ui): correct button alignment on mobile devices
 #  docs(api): update endpoint documentation
 #  style(global): format code with prettier
 #  refactor(utils): simplify date formatting logic

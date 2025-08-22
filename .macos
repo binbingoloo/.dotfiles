@@ -1,0 +1,361 @@
+#!/usr/bin/env zsh
+
+# Color output
+autoload -U colors && colors
+print_info() { echo "${fg[blue]}[INFO]${reset_color} $1" }
+print_success() { echo "${fg[green]}[OK]${reset_color} $1" }
+print_error() { echo "${fg[red]}[ERROR]${reset_color} $1" >&2 }
+print_warning() { echo "${fg[yellow]}[WARN]${reset_color} $1" }
+
+# Safe defaults write wrapper
+write_default() {
+    local domain=$1
+    local key=$2
+    local type=$3
+    local value=$4
+
+    if defaults write "$domain" "$key" "$type" "$value" 2>/dev/null; then
+        return 0
+    else
+        print_warning "Failed to set $domain $key"
+        return 1
+    fi
+}
+
+# Check if running as root
+if [[ $EUID -eq 0 ]]; then
+    print_error "This script should not be run as root"
+    exit 1
+fi
+
+# Check macOS version
+macos_version=$(sw_vers -productVersion)
+macos_major=$(echo "$macos_version" | cut -d. -f1)
+print_info "Configuring macOS $macos_version"
+
+# Close System Settings
+osascript -e 'quit app "System Preferences"' 2>/dev/null || true
+osascript -e 'quit app "System Settings"' 2>/dev/null || true
+
+# Request sudo access
+print_info "Requesting administrator access..."
+if ! sudo -v; then
+    print_error "Failed to obtain sudo access"
+    exit 1
+fi
+
+# Keep sudo alive
+while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
+
+# Create config directory
+config_dir="${HOME}/.config/macos"
+mkdir -p "$config_dir"
+log_file="$config_dir/setup-$(date +%Y%m%d-%H%M%S).log"
+
+# Log all operations
+exec > >(tee -a "$log_file")
+exec 2>&1
+
+print_info "Starting macOS configuration..."
+
+# Track successes and failures
+success_count=0
+error_count=0
+
+# General UI/UX
+print_info "Configuring General UI/UX..."
+
+# Expand save and print panels
+write_default NSGlobalDomain NSNavPanelExpandedStateForSaveMode -bool true && ((success_count++)) || ((error_count++))
+write_default NSGlobalDomain NSNavPanelExpandedStateForSaveMode2 -bool true && ((success_count++)) || ((error_count++))
+write_default NSGlobalDomain PMPrintingExpandedStateForPrint -bool true && ((success_count++)) || ((error_count++))
+write_default NSGlobalDomain PMPrintingExpandedStateForPrint2 -bool true && ((success_count++)) || ((error_count++))
+
+# Disable text substitutions for developers
+write_default NSGlobalDomain NSAutomaticQuoteSubstitutionEnabled -bool false && ((success_count++)) || ((error_count++))
+write_default NSGlobalDomain NSAutomaticDashSubstitutionEnabled -bool false && ((success_count++)) || ((error_count++))
+write_default NSGlobalDomain NSAutomaticSpellingCorrectionEnabled -bool false && ((success_count++)) || ((error_count++))
+write_default NSGlobalDomain NSAutomaticCapitalizationEnabled -bool false && ((success_count++)) || ((error_count++))
+write_default NSGlobalDomain NSAutomaticPeriodSubstitutionEnabled -bool false && ((success_count++)) || ((error_count++))
+write_default NSGlobalDomain NSAutomaticTextCompletionEnabled -bool false && ((success_count++)) || ((error_count++))
+
+# Keyboard settings
+write_default NSGlobalDomain AppleKeyboardUIMode -int 3 && ((success_count++)) || ((error_count++))
+write_default NSGlobalDomain ApplePressAndHoldEnabled -bool false && ((success_count++)) || ((error_count++))
+write_default NSGlobalDomain KeyRepeat -int 4 && ((success_count++)) || ((error_count++))
+write_default NSGlobalDomain InitialKeyRepeat -int 20 && ((success_count++)) || ((error_count++))
+
+# UI performance
+write_default NSGlobalDomain AppleShowScrollBars -string "WhenScrolling" && ((success_count++)) || ((error_count++))
+write_default NSGlobalDomain NSScrollAnimationEnabled -bool false && ((success_count++)) || ((error_count++))
+
+# Reduce transparency - may require accessibility permissions
+if defaults write com.apple.universalaccess reduceTransparency -bool true 2>/dev/null; then
+    ((success_count++))
+else
+    print_warning "Cannot modify accessibility settings - may require Privacy & Security permissions"
+    ((error_count++))
+fi
+
+# Terminal & Shell
+print_info "Configuring Terminal & Shell..."
+
+# Set zsh as default shell
+if [[ "$SHELL" != "/bin/zsh" ]]; then
+    print_info "Setting zsh as default shell..."
+    if chsh -s /bin/zsh 2>/dev/null; then
+        ((success_count++))
+    else
+        print_error "Failed to change shell to zsh"
+        ((error_count++))
+    fi
+fi
+
+# Finder
+print_info "Configuring Finder..."
+
+# File visibility
+write_default NSGlobalDomain AppleShowAllExtensions -bool true && ((success_count++)) || ((error_count++))
+write_default com.apple.finder AppleShowAllFiles -bool true && ((success_count++)) || ((error_count++))
+
+# Finder UI
+write_default com.apple.finder ShowPathbar -bool true && ((success_count++)) || ((error_count++))
+write_default com.apple.finder ShowStatusBar -bool true && ((success_count++)) || ((error_count++))
+write_default com.apple.finder _FXShowPosixPathInTitle -bool true && ((success_count++)) || ((error_count++))
+
+# Finder behavior
+write_default com.apple.finder _FXSortFoldersFirst -bool true && ((success_count++)) || ((error_count++))
+write_default com.apple.finder _FXSortFoldersFirstOnDesktop -bool true && ((success_count++)) || ((error_count++))
+write_default com.apple.finder FXPreferredViewStyle -string "clmv" && ((success_count++)) || ((error_count++))
+write_default com.apple.finder FXDefaultSearchScope -string "SCcf" && ((success_count++)) || ((error_count++))
+write_default com.apple.finder FXEnableExtensionChangeWarning -bool false && ((success_count++)) || ((error_count++))
+write_default com.apple.finder QLEnableTextSelection -bool true && ((success_count++)) || ((error_count++))
+
+# Show hidden folders
+if chflags nohidden ~/Library 2>/dev/null; then
+    ((success_count++))
+else
+    print_warning "Failed to unhide ~/Library"
+    ((error_count++))
+fi
+
+if sudo chflags nohidden /Volumes 2>/dev/null; then
+    ((success_count++))
+else
+    print_warning "Failed to unhide /Volumes"
+    ((error_count++))
+fi
+
+# Dock
+print_info "Configuring Dock..."
+
+write_default com.apple.dock autohide -bool true && ((success_count++)) || ((error_count++))
+write_default com.apple.dock autohide-delay -float 0 && ((success_count++)) || ((error_count++))
+write_default com.apple.dock autohide-time-modifier -float 0.4 && ((success_count++)) || ((error_count++))
+write_default com.apple.dock minimize-to-application -bool true && ((success_count++)) || ((error_count++))
+write_default com.apple.dock show-recents -bool false && ((success_count++)) || ((error_count++))
+write_default com.apple.dock launchanim -bool false && ((success_count++)) || ((error_count++))
+write_default com.apple.dock orientation -string "down" && ((success_count++)) || ((error_count++))
+write_default com.apple.dock tilesize -int 64 && ((success_count++)) || ((error_count++))
+
+# Stage Manager
+write_default com.apple.WindowManager GloballyEnabled -bool false && ((success_count++)) || ((error_count++))
+
+# Hot corners
+write_default com.apple.dock wvous-br-corner -int 4 && ((success_count++)) || ((error_count++))
+write_default com.apple.dock wvous-br-modifier -int 0 && ((success_count++)) || ((error_count++))
+write_default com.apple.dock wvous-tr-corner -int 2 && ((success_count++)) || ((error_count++))
+write_default com.apple.dock wvous-tr-modifier -int 0 && ((success_count++)) || ((error_count++))
+
+# Screenshots
+print_info "Configuring Screenshots..."
+
+screenshots_dir="${HOME}/Screenshots"
+if mkdir -p "$screenshots_dir" 2>/dev/null; then
+    ((success_count++))
+    write_default com.apple.screencapture location -string "$screenshots_dir" && ((success_count++)) || ((error_count++))
+else
+    print_error "Failed to create screenshots directory"
+    ((error_count++))
+fi
+
+write_default com.apple.screencapture type -string "png" && ((success_count++)) || ((error_count++))
+write_default com.apple.screencapture disable-shadow -bool true && ((success_count++)) || ((error_count++))
+write_default com.apple.screencapture include-date -bool true && ((success_count++)) || ((error_count++))
+write_default com.apple.screencapture show-thumbnail -bool true && ((success_count++)) || ((error_count++))
+
+# Safari
+print_info "Configuring Safari for Development..."
+
+write_default com.apple.Safari IncludeDevelopMenu -bool true && ((success_count++)) || ((error_count++))
+write_default com.apple.Safari WebKitDeveloperExtrasEnabledPreferenceKey -bool true && ((success_count++)) || ((error_count++))
+write_default com.apple.Safari com.apple.Safari.ContentPageGroupIdentifier.WebKit2DeveloperExtrasEnabled -bool true && ((success_count++)) || ((error_count++))
+write_default com.apple.Safari IncludeInternalDebugMenu -bool true && ((success_count++)) || ((error_count++))
+write_default com.apple.Safari SendDoNotTrackHTTPHeader -bool true && ((success_count++)) || ((error_count++))
+write_default com.apple.Safari WebKitStorageBlockingPolicy -int 1 && ((success_count++)) || ((error_count++))
+write_default com.apple.Safari AutoFillFromAddressBook -bool false && ((success_count++)) || ((error_count++))
+write_default com.apple.Safari AutoFillPasswords -bool false && ((success_count++)) || ((error_count++))
+write_default com.apple.Safari AutoFillCreditCardData -bool false && ((success_count++)) || ((error_count++))
+
+# Development Tools
+print_info "Configuring Development Tools..."
+
+# Xcode
+if [[ -d "/Applications/Xcode.app" ]]; then
+    write_default com.apple.dt.Xcode ShowBuildOperationDuration -bool true && ((success_count++)) || ((error_count++))
+    write_default com.apple.dt.Xcode DVTTextShowLineNumbers -bool true && ((success_count++)) || ((error_count++))
+    write_default com.apple.dt.Xcode DVTTextEditorTrimTrailingWhitespace -bool true && ((success_count++)) || ((error_count++))
+fi
+
+# TextEdit
+write_default com.apple.TextEdit RichText -int 0 && ((success_count++)) || ((error_count++))
+write_default com.apple.TextEdit PlainTextEncoding -int 4 && ((success_count++)) || ((error_count++))
+write_default com.apple.TextEdit PlainTextEncodingForWrite -int 4 && ((success_count++)) || ((error_count++))
+
+# Activity Monitor
+write_default com.apple.ActivityMonitor ShowCategory -int 0 && ((success_count++)) || ((error_count++))
+
+# Prevent .DS_Store files
+write_default com.apple.desktopservices DSDontWriteNetworkStores -bool true && ((success_count++)) || ((error_count++))
+write_default com.apple.desktopservices DSDontWriteUSBStores -bool true && ((success_count++)) || ((error_count++))
+
+# Trackpad
+print_info "Configuring Trackpad..."
+
+write_default com.apple.driver.AppleBluetoothMultitouch.trackpad Clicking -bool true && ((success_count++)) || ((error_count++))
+write_default com.apple.AppleMultitouchTrackpad Clicking -bool true && ((success_count++)) || ((error_count++))
+
+if defaults -currentHost write NSGlobalDomain com.apple.mouse.tapBehavior -int 1 2>/dev/null; then
+    ((success_count++))
+else
+    print_warning "Failed to set mouse tap behavior"
+    ((error_count++))
+fi
+
+write_default com.apple.AppleMultitouchTrackpad TrackpadThreeFingerDrag -bool false && ((success_count++)) || ((error_count++))
+write_default com.apple.driver.AppleBluetoothMultitouch.trackpad TrackpadThreeFingerDrag -bool false && ((success_count++)) || ((error_count++))
+write_default NSGlobalDomain com.apple.swipescrolldirection -bool true && ((success_count++)) || ((error_count++))
+
+# Security
+print_info "Configuring Security..."
+
+write_default com.apple.screensaver askForPassword -int 1 && ((success_count++)) || ((error_count++))
+write_default com.apple.screensaver askForPasswordDelay -int 0 && ((success_count++)) || ((error_count++))
+
+# Firewall
+if sudo /usr/libexec/ApplicationFirewall/socketfilterfw --setglobalstate on 2>/dev/null; then
+    ((success_count++))
+else
+    print_warning "Failed to enable firewall"
+    ((error_count++))
+fi
+
+if sudo /usr/libexec/ApplicationFirewall/socketfilterfw --setstealthmode on 2>/dev/null; then
+    ((success_count++))
+else
+    print_warning "Failed to enable firewall stealth mode"
+    ((error_count++))
+fi
+
+# FileVault check
+if ! fdesetup status | grep -q "FileVault is On"; then
+    print_warning "FileVault is not enabled. Consider enabling in System Settings > Privacy & Security"
+fi
+
+# Disable Siri
+write_default com.apple.assistant.support "Assistant Enabled" -bool false && ((success_count++)) || ((error_count++))
+
+# Performance
+print_info "Configuring Performance..."
+
+write_default NSGlobalDomain NSAutomaticWindowAnimationsEnabled -bool false && ((success_count++)) || ((error_count++))
+write_default NSGlobalDomain NSWindowResizeTime -float 0.001 && ((success_count++)) || ((error_count++))
+write_default com.apple.finder DisableAllAnimations -bool true && ((success_count++)) || ((error_count++))
+
+# Power management
+sudo pmset -c sleep 0 2>/dev/null && ((success_count++)) || { print_warning "Failed to disable sleep when plugged in"; ((error_count++)); }
+sudo pmset -c displaysleep 15 2>/dev/null && ((success_count++)) || { print_warning "Failed to set display sleep"; ((error_count++)); }
+sudo pmset -b sleep 15 2>/dev/null && ((success_count++)) || { print_warning "Failed to set battery sleep"; ((error_count++)); }
+sudo pmset -b displaysleep 5 2>/dev/null && ((success_count++)) || { print_warning "Failed to set battery display sleep"; ((error_count++)); }
+sudo pmset -a hibernatemode 0 2>/dev/null && ((success_count++)) || { print_warning "Failed to disable hibernation"; ((error_count++)); }
+sudo pmset -a powernap 0 2>/dev/null && ((success_count++)) || { print_warning "Failed to disable Power Nap"; ((error_count++)); }
+
+# Network
+print_info "Configuring Network..."
+
+if sudo defaults write /Library/Preferences/SystemConfiguration/com.apple.captive.control Active -bool false 2>/dev/null; then
+    ((success_count++))
+else
+    print_warning "Failed to disable captive portal"
+    ((error_count++))
+fi
+
+# Sound
+print_info "Configuring Sound..."
+
+sudo nvram SystemAudioVolume=" " 2>/dev/null && ((success_count++)) || { print_warning "Failed to disable startup chime"; ((error_count++)); }
+write_default NSGlobalDomain com.apple.sound.beep.feedback -bool false && ((success_count++)) || ((error_count++))
+write_default NSGlobalDomain com.apple.sound.uiaudio.enabled -bool false && ((success_count++)) || ((error_count++))
+
+# Spotlight
+print_info "Configuring Spotlight..."
+
+if write_default com.apple.spotlight orderedItems -array \
+    '{"enabled" = 1;"name" = "APPLICATIONS";}' \
+    '{"enabled" = 1;"name" = "SYSTEM_PREFS";}' \
+    '{"enabled" = 0;"name" = "DIRECTORIES";}' \
+    '{"enabled" = 0;"name" = "PDF";}' \
+    '{"enabled" = 0;"name" = "FONTS";}' \
+    '{"enabled" = 0;"name" = "DOCUMENTS";}' \
+    '{"enabled" = 0;"name" = "MESSAGES";}' \
+    '{"enabled" = 0;"name" = "CONTACT";}' \
+    '{"enabled" = 0;"name" = "EVENT_TODO";}' \
+    '{"enabled" = 0;"name" = "IMAGES";}' \
+    '{"enabled" = 0;"name" = "BOOKMARKS";}' \
+    '{"enabled" = 0;"name" = "MUSIC";}' \
+    '{"enabled" = 0;"name" = "MOVIES";}' \
+    '{"enabled" = 0;"name" = "PRESENTATIONS";}' \
+    '{"enabled" = 0;"name" = "SPREADSHEETS";}' \
+    '{"enabled" = 0;"name" = "SOURCE";}'; then
+    ((success_count++))
+else
+    print_warning "Failed to configure Spotlight categories"
+    ((error_count++))
+fi
+
+# Restart services
+print_info "Restarting affected services..."
+
+for app in "Finder" "Dock" "SystemUIServer" "cfprefsd"; do
+    killall "${app}" 2>/dev/null || true
+done
+
+# Summary
+echo ""
+print_success "Configuration completed!"
+print_info "Successful changes: $success_count"
+if [[ $error_count -gt 0 ]]; then
+    print_warning "Failed changes: $error_count"
+fi
+print_info "Log saved to: $log_file"
+
+if [[ $error_count -gt 0 ]]; then
+    echo ""
+    print_warning "Some settings could not be applied. This is normal for:"
+    print_warning "- Accessibility settings (requires Privacy & Security permissions)"
+    print_warning "- System-protected settings (requires disabling SIP)"
+    print_warning "- Settings for apps that aren't installed"
+fi
+
+echo ""
+print_info "Some changes require a logout or restart to take effect"
+
+# Restart prompt
+echo ""
+read -q "REPLY?Would you like to restart now? (y/n) "
+echo
+if [[ $REPLY =~ ^[Yy]$ ]]; then
+    print_info "Restarting in 5 seconds..."
+    sleep 5
+    sudo shutdown -r now
+fi

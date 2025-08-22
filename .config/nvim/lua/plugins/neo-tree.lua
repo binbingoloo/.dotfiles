@@ -47,6 +47,7 @@ return {
           config = { use_float = true },
         },
       },
+      width = 30,
     },
 
     filesystem = {

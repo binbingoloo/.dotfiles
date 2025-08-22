@@ -29,6 +29,7 @@ icons:
 
 # Standard ignore patterns
 ignore-globs:
+  - .DS_Store
   - .git
   - node_modules
   - __pycache__

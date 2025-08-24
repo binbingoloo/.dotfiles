@@ -19,7 +19,7 @@ font-feature = ss02
 font-feature = cv14
 
 # Window Appearance
-window-width = 155
+window-width = 160
 window-height = 35
 window-padding-x = 0
 window-padding-y = 0

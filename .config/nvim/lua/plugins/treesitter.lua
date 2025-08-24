@@ -19,6 +19,7 @@ return {
         "query",
         "vim",
         "vimdoc",
+        "make",
       },
       -- Automatically installs parsers for new file types you open
       auto_install = true,

@@ -83,6 +83,15 @@ return {
           -- Show diagnostics in floating window
           map("<leader>cd", vim.diagnostic.open_float, "[C]ode [D]iagnostics")
 
+          -- C/C++ Specific
+          local client = vim.lsp.get_client_by_id(event.data.client_id)
+          if client and client.name == "clangd" then
+            map("<leader>oh", "<cmd>ClangdSwitchSourceHeader<cr>", "[O]pen [H]eader/Source")
+            map("<leader>ct", "<cmd>ClangdTypeHierarchy<cr>", "[C]lass [T]ype Hierarchy")
+            map("<leader>cm", "<cmd>ClangdMemoryUsage<cr>", "[C]langd [M]emory Usage")
+            map("<leader>cs", "<cmd>ClangdSymbolInfo<cr>", "[C]langd [S]ymbol Info")
+          end
+
           -- Compatibility wrapper for different Neovim versions
           -- Neovim 0.11 changed the method signature for supports_method
           local function client_supports_method(client, method, bufnr)
@@ -186,6 +195,7 @@ return {
       -- Server-specific configurations
       -- Each LSP server can have unique settings
       local servers = {
+        -- Lua
         lua_ls = {
           settings = {
             Lua = {
@@ -196,6 +206,13 @@ return {
             },
           },
         },
+        -- C/C++
+        clangd = {
+          cmd = {
+            "clangd",
+            "--offset-encoding=utf-16", -- Required for Neovim compatibility
+          },
+        },
       }
 
       -- Build list of tools to install
@@ -203,6 +220,16 @@ return {
       local ensure_installed = vim.tbl_keys(servers or {})
       vim.list_extend(ensure_installed, {
         "stylua", -- Lua formatter
+        "clang-format", -- C/C++ formatter
+
+        -- C/C++ development tools
+        "cmake-language-server", -- CMake LSP
+        "cmakelint", -- CMake linter
+        "cpplint", -- C++ linter
+        "cpptools", -- Microsoft C++ tools
+
+        -- Optional: Debugger
+        "codelldb", -- High-performance debugger
       })
       require("mason-tool-installer").setup({ ensure_installed = ensure_installed })
 

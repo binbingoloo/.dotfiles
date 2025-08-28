@@ -180,7 +180,7 @@ else
 fi
 
 write_default com.apple.screencapture type -string "png" && ((success_count++)) || ((error_count++))
-write_default com.apple.screencapture disable-shadow -bool true && ((success_count++)) || ((error_count++))
+write_default com.apple.screencapture disable-shadow -bool false && ((success_count++)) || ((error_count++))
 write_default com.apple.screencapture include-date -bool true && ((success_count++)) || ((error_count++))
 write_default com.apple.screencapture show-thumbnail -bool true && ((success_count++)) || ((error_count++))
 

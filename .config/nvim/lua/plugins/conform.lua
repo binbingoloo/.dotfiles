@@ -22,7 +22,6 @@ return {
       -- Silently fails instead of showing error notifications when formatters crash
       notify_on_error = false,
       format_on_save = function(bufnr)
-        -- Skip auto-formatting for C/C++ files (often have project-specific styles)
         local disable_filetypes = {}
         if disable_filetypes[vim.bo[bufnr].filetype] then
           return nil

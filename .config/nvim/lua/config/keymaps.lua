@@ -21,3 +21,17 @@ vim.keymap.set("n", "<C-S-h>", "<C-w>H", { desc = "[M]ove window [L]eft" })
 vim.keymap.set("n", "<C-S-l>", "<C-w>L", { desc = "[M]ove window [R]ight" })
 vim.keymap.set("n", "<C-S-j>", "<C-w>J", { desc = "[M]ove window [D]own" })
 vim.keymap.set("n", "<C-S-k>", "<C-w>K", { desc = "[M]ove window [U]p" })
+
+-- Allow continuous indentation in visual mode without exiting visual mode
+vim.keymap.set("v", "<", "<gv", { desc = "Indent left and maintain visual selection" })
+vim.keymap.set("v", ">", ">gv", { desc = "Indent right and maintain visual selection" })
+
+-- Make normal mode indentation repeatable without requiring re-entry of commands
+vim.keymap.set("n", ">", ">>", { desc = "Indent line right" })
+vim.keymap.set("n", "<", "<<", { desc = "Indent line left" })
+
+-- Continuous window resizing with Alt+arrow keys
+vim.keymap.set("n", "<M-h>", "<C-w>>", { desc = "Push border left (increase width)" })
+vim.keymap.set("n", "<M-l>", "<C-w><", { desc = "Push border right (decrease width)" })
+vim.keymap.set("n", "<M-j>", "<C-w>+", { desc = "Push border down (increase height)" })
+vim.keymap.set("n", "<M-k>", "<C-w>-", { desc = "Push border up (decrease height)" })

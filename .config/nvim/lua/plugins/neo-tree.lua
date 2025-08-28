@@ -53,6 +53,11 @@ return {
     filesystem = {
       use_libuv_file_watcher = true,
 
+      follow_current_file = {
+        enabled = true,
+        leave_dirs_open = true,
+      },
+
       filtered_items = {
         visible = true,
         hide_dotfiles = false,
@@ -63,6 +68,8 @@ return {
           "node_modules",
           ".DS_Store",
           "__pycache__",
+          ".cache",
+          "build",
         },
       },
     },

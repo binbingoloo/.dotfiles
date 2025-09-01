@@ -20,6 +20,13 @@ return {
         "vim",
         "vimdoc",
         "make",
+        "javascript",
+        "typescript",
+        "tsx",
+        "css",
+        "json",
+        "jsonc",
+        "yaml",
       },
       -- Automatically installs parsers for new file types you open
       auto_install = true,

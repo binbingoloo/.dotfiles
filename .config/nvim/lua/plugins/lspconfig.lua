@@ -230,6 +230,11 @@ return {
 
         -- Optional: Debugger
         "codelldb", -- High-performance debugger
+
+        -- TypeScript/JavaScript
+        "typescript-language-server",
+        "prettier",
+        "eslint-lsp",
       })
       require("mason-tool-installer").setup({ ensure_installed = ensure_installed })
 

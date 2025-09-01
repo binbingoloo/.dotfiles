@@ -66,6 +66,7 @@ return {
         never_show = {
           ".git",
           "node_modules",
+          ".next",
           ".DS_Store",
           "__pycache__",
           ".cache",

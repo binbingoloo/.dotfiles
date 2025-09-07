@@ -4,7 +4,7 @@ theme = light:catppuccin-latte,dark:catppuccin-mocha
 
 # Font Settings
 font-family = JetBrainsMono Nerd Font
-font-size = 11
+font-size = 12
 # Better rendering on Retina displays
 font-thicken = true
 # More comfortable line spacing

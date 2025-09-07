@@ -152,7 +152,7 @@ print_info "Configuring Dock..."
 write_default com.apple.dock autohide -bool true && ((success_count++)) || ((error_count++))
 write_default com.apple.dock autohide-delay -float 0 && ((success_count++)) || ((error_count++))
 write_default com.apple.dock autohide-time-modifier -float 0.4 && ((success_count++)) || ((error_count++))
-write_default com.apple.dock minimize-to-application -bool true && ((success_count++)) || ((error_count++))
+write_default com.apple.dock minimize-to-application -bool false && ((success_count++)) || ((error_count++))
 write_default com.apple.dock show-recents -bool false && ((success_count++)) || ((error_count++))
 write_default com.apple.dock launchanim -bool false && ((success_count++)) || ((error_count++))
 write_default com.apple.dock orientation -string "down" && ((success_count++)) || ((error_count++))

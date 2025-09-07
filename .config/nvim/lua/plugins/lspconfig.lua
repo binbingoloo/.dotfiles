@@ -213,6 +213,46 @@ return {
             "--offset-encoding=utf-16", -- Required for Neovim compatibility
           },
         },
+
+        cssls = {}, -- CSS language server
+        tailwindcss = {
+          setup = function(_, opts)
+            -- get default lspconfig tailwindcss config
+            local tw_default = require("lspconfig.server_configurations.tailwindcss").default_config
+
+            opts.filetypes = opts.filetypes or {}
+            vim.list_extend(opts.filetypes, tw_default.filetypes or {})
+
+            -- remove excluded filetypes
+            opts.filetypes = vim.tbl_filter(function(ft)
+              return not vim.tbl_contains(opts.filetypes_exclude or {}, ft)
+            end, opts.filetypes)
+
+            -- add includeLanguage mappings for Phoenix/Elixir
+            opts.settings = {
+              tailwindCSS = {
+                includeLanguages = {
+                  elixir = "html-eex",
+                  eelixir = "html-eex",
+                  heex = "html-eex",
+                },
+              },
+            }
+
+            -- add additional filetypes
+            vim.list_extend(opts.filetypes, opts.filetypes_include or {})
+          end,
+        },
+
+        stylelint_lsp = {
+          filetypes = { "css", "scss", "sass", "less", "postcss" },
+          settings = {
+            autoFixOnFormat = true,
+            -- configOverrides = {
+            --   rules = {},
+            -- },
+          },
+        },
       }
 
       -- Build list of tools to install
@@ -235,6 +275,12 @@ return {
         "typescript-language-server",
         "prettier",
         "eslint-lsp",
+
+        -- CSS / Tailwind
+        "stylelint-lsp", -- LSP wrapper for stylelint
+        "stylelint", -- stylelint CLI
+        "tailwindcss-language-server", -- Tailwind-specific completions & docs
+        "prettierd", -- Fast prettier daemon (better than raw prettier)
       })
       require("mason-tool-installer").setup({ ensure_installed = ensure_installed })
 

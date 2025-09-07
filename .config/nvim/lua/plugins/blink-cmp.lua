@@ -23,6 +23,8 @@ return {
       },
       -- Provides Neovim Lua API completions when editing config files
       "folke/lazydev.nvim",
+      -- TailwindCSS completions colorizer
+      { "roobert/tailwindcss-colorizer-cmp.nvim", opts = {} },
     },
     opts = {
       keymap = {
@@ -39,6 +41,10 @@ return {
       completion = {
         -- Prevents documentation popup from appearing automatically (can still trigger manually)
         documentation = { auto_show = false, auto_show_delay_ms = 500 },
+
+        format = function(entry, item)
+          return require("tailwindcss-colorizer-cmp").formatter(entry, item)
+        end,
       },
 
       sources = {
@@ -59,5 +65,9 @@ return {
       -- Shows function signatures while typing arguments
       signature = { enabled = true },
     },
+  },
+  {
+    "roobert/tailwindcss-colorizer-cmp.nvim",
+    opts = {},
   },
 }

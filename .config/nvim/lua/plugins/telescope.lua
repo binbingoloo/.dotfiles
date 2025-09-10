@@ -32,6 +32,8 @@ return {
             "^dist/",
             "^target/",
             "^build/",
+            "^.next/",
+            "^.vercel/",
           },
         },
         pickers = {

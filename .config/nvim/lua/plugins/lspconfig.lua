@@ -272,7 +272,7 @@ return {
         "codelldb", -- High-performance debugger
 
         -- TypeScript/JavaScript
-        "typescript-language-server",
+        -- "typescript-language-server",
         "prettier",
         "eslint-lsp",
 

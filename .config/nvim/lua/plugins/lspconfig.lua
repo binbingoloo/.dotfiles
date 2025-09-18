@@ -214,6 +214,11 @@ return {
           },
         },
 
+        -- TypleScrit Language Server
+        ts_ls = {
+          filetypes = { "javascript", "javascriptreact", "typescript", "typescriptreact" },
+        },
+
         cssls = {}, -- CSS language server
         tailwindcss = {
           setup = function(_, opts)
@@ -272,7 +277,8 @@ return {
         "codelldb", -- High-performance debugger
 
         -- TypeScript/JavaScript
-        -- "typescript-language-server",
+        -- NOTE: Handled in typescript-tools.nvim
+        "typescript-language-server",
         "prettier",
         "eslint-lsp",
 

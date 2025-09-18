@@ -21,7 +21,8 @@ return {
         "vimdoc",
         "make",
         "javascript",
-        -- "typescript", BUG: Confilict with typescript-tools.nvim
+        -- BUG: Confilict with typescript-tools.nvim
+        "typescript",
         "tsx",
         "css",
         "json",

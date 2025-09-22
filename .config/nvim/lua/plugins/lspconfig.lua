@@ -258,6 +258,20 @@ return {
             -- },
           },
         },
+
+        -- Rust
+        rust_analyzer = {
+          settings = {
+            ["rust-analyzer"] = {
+              cargo = { allFeatures = true },
+              checkOnSave = { command = "clippy" },
+              inlayHints = {
+                lifetimeElisionHints = { enable = true, useParameterNames = true },
+                closureReturnTypeHints = { enable = "with_block" },
+              },
+            },
+          },
+        },
       }
 
       -- Build list of tools to install
@@ -273,9 +287,6 @@ return {
         "cpplint", -- C++ linter
         "cpptools", -- Microsoft C++ tools
 
-        -- Optional: Debugger
-        "codelldb", -- High-performance debugger
-
         -- TypeScript/JavaScript
         -- NOTE: Handled in typescript-tools.nvim
         "typescript-language-server",
@@ -287,6 +298,11 @@ return {
         "stylelint", -- stylelint CLI
         "tailwindcss-language-server", -- Tailwind-specific completions & docs
         "prettierd", -- Fast prettier daemon (better than raw prettier)
+
+        -- Rust
+        "rust-analyzer",
+        "codelldb",
+        "rustfmt",
       })
       require("mason-tool-installer").setup({ ensure_installed = ensure_installed })
 

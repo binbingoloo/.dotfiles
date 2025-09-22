@@ -41,6 +41,7 @@ return {
         cpp = { "clang-format" },
         javascript = { "prettier" },
         typescript = { "prettier" },
+        rust = { "rustfmt" },
       },
     },
   },

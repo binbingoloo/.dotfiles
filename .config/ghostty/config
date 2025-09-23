@@ -9,14 +9,12 @@ font-size = 12
 font-thicken = true
 # More comfortable line spacing
 adjust-cell-height = 15%
-# Disable ligatures
-font-feature = -liga
 # Better 'l' distinction
 font-feature = ss01
-# Zero with dot
-font-feature = ss02
-# Better 'i' distinction
-font-feature = cv14
+# Disable ligatures
+font-feature = -calt
+font-feature = -liga
+font-feature = -dlig
 
 # Window Appearance
 window-width = 160

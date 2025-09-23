@@ -24,11 +24,3 @@ vim.keymap.set("n", "<M-o>", function()
   local file_path = vim.fn.expand("%:p:h") -- current file's folder
   require("toggleterm").exec("live-server " .. file_path, 1) -- opens in Terminal #1
 end, { desc = "Start live-server for hot reload" })
-
--- Disable automatic comment continuation
-vim.api.nvim_create_autocmd("FileType", {
-  pattern = "*",
-  callback = function()
-    vim.opt_local.formatoptions:remove({ "r", "o" })
-  end,
-})

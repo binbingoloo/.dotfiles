@@ -28,6 +28,12 @@ return {
         "json",
         "jsonc",
         "yaml",
+        "toml",
+        -- Rust
+        "rust",
+        -- Python
+        "python",
+        "requirements", -- pip/poetry requirements.txt parser
       },
       -- Automatically installs parsers for new file types you open
       auto_install = true,

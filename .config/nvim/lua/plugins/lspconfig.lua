@@ -214,6 +214,19 @@ return {
           },
         },
 
+        -- Python
+        basedpyright = {
+          -- Do not set default analysis options; only set for venv detection
+          settings = {
+            python = {
+              venvPath = ".", -- detect venv in project root
+              pythonPath = vim.fn.exepath("python"), -- use interpreter from active shell env
+            },
+          },
+        },
+
+        ruff = {}, -- no extra config needed; uses pyproject.toml/ruff.toml
+
         -- TypleScrit Language Server
         ts_ls = {
           filetypes = { "javascript", "javascriptreact", "typescript", "typescriptreact" },
@@ -302,7 +315,11 @@ return {
         -- Rust
         "rust-analyzer",
         "codelldb",
-        "rustfmt",
+        -- "rustfmt", `rustup component add rustfmt`
+
+        -- Python
+        "black", -- PEP 8 formatter
+        "isort", -- import sorter (optional)
       })
       require("mason-tool-installer").setup({ ensure_installed = ensure_installed })
 

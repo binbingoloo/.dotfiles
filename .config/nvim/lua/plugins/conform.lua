@@ -42,6 +42,7 @@ return {
         javascript = { "prettier" },
         typescript = { "prettier" },
         rust = { "rustfmt" },
+        python = { "isort", "black" },
       },
     },
   },

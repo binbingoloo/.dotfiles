@@ -220,7 +220,7 @@ return {
           settings = {
             python = {
               venvPath = ".", -- detect venv in project root
-              pythonPath = vim.fn.exepath("python"), -- use interpreter from active shell env
+              -- pythonPath = vim.fn.exepath("python"), -- use interpreter from active shell env
             },
           },
         },
@@ -316,10 +316,6 @@ return {
         "rust-analyzer",
         "codelldb",
         -- "rustfmt", `rustup component add rustfmt`
-
-        -- Python
-        "black", -- PEP 8 formatter
-        "isort", -- import sorter (optional)
       })
       require("mason-tool-installer").setup({ ensure_installed = ensure_installed })
 
